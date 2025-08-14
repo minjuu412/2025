@@ -1,6 +1,41 @@
 import streamlit as st
 
-# 질문 데이터 (E/I, S/N, T/F, J/P 각각 2문항)
+# HTML/CSS 스타일 적용
+st.markdown("""
+    <style>
+    body {
+        background-color: #FFF9F9;
+    }
+    .question-card {
+        background-color: #FFECEC;
+        padding: 15px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+    }
+    .stButton>button {
+        background-color: #FF9AA2;
+        color: white;
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+    .stButton>button:hover {
+        background-color: #FF6F91;
+        color: white;
+    }
+    .result-card {
+        background-color: #FFDDE1;
+        padding: 20px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 20px;
+        box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 질문 데이터
 questions = [
     {"type": "EI", "q": "사람 많은 모임이 있을 때 나는?", "a": ("에너지가 충전된다 (E)", "에너지가 소모된다 (I)")},
     {"type": "EI", "q": "휴일 계획은?", "a": ("친구와 약속을 많이 잡는다 (E)", "혼자만의 시간을 보낸다 (I)")},
@@ -12,7 +47,7 @@ questions = [
     {"type": "JP", "q": "일정을 관리할 때 나는?", "a": ("체계적으로 기록한다 (J)", "필요할 때만 체크한다 (P)")}
 ]
 
-# MBTI 성격 및 궁합 데이터
+# MBTI 설명
 mbti_info = {
     "INTJ": "전략적이고 계획적인 성향, 목표 지향적.",
     "INTP": "논리적이고 분석적인 성향, 아이디어 탐구를 좋아함.",
@@ -33,26 +68,24 @@ mbti_info = {
 }
 
 # 페이지 설정
-st.set_page_config(page_title="빠른 MBTI 검사", page_icon="🧠")
-st.title("🧠 빠른 MBTI 검사")
-st.write("8문항으로 간단히 MBTI를 알아봅니다.")
+st.set_page_config(page_title="고등학생 MBTI 검사", page_icon="🎀")
+st.title("🎀 고등학생 전용 MBTI 검사 🎀")
+st.write("8문항으로 귀엽고 빠르게 MBTI를 알아보세요! 💖")
 
 # 사용자 답변 저장
 answers = {}
-
 for idx, q in enumerate(questions):
-    choice = st.radio(f"{idx+1}. {q['q']}", q["a"], index=None)
+    st.markdown(f"<div class='question-card'><b>{idx+1}. {q['q']}</b></div>", unsafe_allow_html=True)
+    choice = st.radio("", q["a"], index=None, key=f"q{idx}")
     answers[idx] = choice
 
 # 검사 버튼
-if st.button("검사 결과 보기"):
+if st.button("✨ 검사 결과 보기 ✨"):
     if None in answers.values():
-        st.warning("모든 질문에 답해주세요.")
+        st.warning("모든 질문에 답해주세요! 💌")
     else:
-        # 결과 계산
         score = {"E": 0, "I": 0, "S": 0, "N": 0, "T": 0, "F": 0, "J": 0, "P": 0}
         for idx, ans in answers.items():
-            dim = questions[idx]["type"]
             if ans.endswith("(E)"): score["E"] += 1
             if ans.endswith("(I)"): score["I"] += 1
             if ans.endswith("(S)"): score["S"] += 1
@@ -69,10 +102,9 @@ if st.button("검사 결과 보기"):
             ("J" if score["J"] > score["P"] else "P")
         )
 
-        st.subheader(f"📌 당신의 MBTI는 **{mbti_result}** 입니다!")
-        st.write(mbti_info[mbti_result])
+        st.markdown(f"<div class='result-card'>💖 당신의 MBTI는 <b>{mbti_result}</b> 입니다! 💖<br>{mbti_info[mbti_result]}</div>", unsafe_allow_html=True)
 
 # 푸터
 st.markdown("---")
-st.caption("Made with ❤️ using Streamlit")
+st.caption("Made with 💝 for High School Students using Streamlit")
 
