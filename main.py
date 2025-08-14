@@ -1,115 +1,149 @@
 import streamlit as st
 
-# 페이지 상태 관리
-if "show_results" not in st.session_state:
-    st.session_state.show_results = False
+# -----------------------
+# 페이지 & 스타일
+# -----------------------
+st.set_page_config(page_title="MBTI 2인 궁합 테스트", page_icon="💌")
 
-# CSS 스타일 적용
 st.markdown("""
-    <style>
-    body {
-        background-color: #FFF9F9;
-    }
-    .title {
-        font-size: 30px;
-        font-weight: bold;
-        color: #FF6F91;
-        text-align: center;
-        padding: 10px;
-    }
-    .stButton>button {
-        background-color: #FF9AA2;
-        color: white;
-        font-size: 18px;
-        border-radius: 12px;
-        padding: 10px 20px;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background-color: #FF6F91;
-        color: white;
-        transform: scale(1.05);
-    }
-    .result-card {
-        padding: 15px;
-        border-radius: 15px;
-        margin-bottom: 15px;
-        box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
-        font-size: 18px;
-    }
-    .good {
-        background-color: #FFECEC;
-    }
-    .neutral {
-        background-color: #FFF6E5;
-    }
-    </style>
+<style>
+body { background: #FFF9FB; }
+.title {
+  text-align:center; font-size: 32px; font-weight: 800; color:#FF6F91;
+  padding: 8px 0 2px 0;
+}
+.sub {
+  text-align:center; color:#555; margin-bottom: 12px;
+}
+.card {
+  background:#FFFFFF; border-radius:18px; padding:18px; 
+  box-shadow: 0 6px 24px rgba(255,111,145,.15);
+  margin: 8px 0;
+}
+.score {
+  font-size: 28px; font-weight:700; text-align:center; margin: 6px 0 2px 0;
+}
+.badge {
+  display:inline-block; padding:6px 10px; border-radius:999px; 
+  background:#FFE4EC; color:#FF3B7A; font-weight:700; font-size:13px;
+}
+.pill {
+  display:inline-block; padding:6px 10px; border-radius:10px; 
+  background:#F6F6FF; margin-right:6px; margin-bottom:6px; font-size:13px;
+}
+.stButton>button {
+  background:#FF9AA2; color:#fff; border-radius:12px; padding:10px 18px;
+  font-size:16px; transition:.2s; border:0;
+}
+.stButton>button:hover { background:#FF6F91; transform: translateY(-1px) scale(1.02); }
+.select label { font-weight:700; color:#444; }
+.hint { color:#777; font-size:13px; text-align:center; }
+.sep { height:10px; }
+</style>
 """, unsafe_allow_html=True)
 
-# 간단한 MBTI 궁합 데이터 예시
-compatibility = {
-    ("INTJ", "ENFP"): {"score": "💖 95%", "desc": "서로의 부족한 부분을 보완하고, 창의성과 실행력이 잘 어울립니다."},
-    ("ENFP", "INTJ"): {"score": "💖 95%", "desc": "서로의 부족한 부분을 보완하고, 창의성과 실행력이 잘 어울립니다."},
-    ("ISTJ", "ESFP"): {"score": "💞 90%", "desc": "현실적인 계획과 활발함이 조화를 이룹니다."},
-    ("ESFP", "ISTJ"): {"score": "💞 90%", "desc": "현실적인 계획과 활발함이 조화를 이룹니다."},
-    ("INFJ", "ENFP"): {"score": "💗 92%", "desc": "꿈과 가치관을 공유하고 서로를 격려합니다."},
-    ("ENFP", "INFJ"): {"score": "💗 92%", "desc": "꿈과 가치관을 공유하고 서로를 격려합니다."},
-}
+st.markdown("<div class='title'>💌 MBTI 2인 궁합 테스트</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub'>두 사람의 MBTI를 선택하고 궁합을 확인해보세요! ✨</div>", unsafe_allow_html=True)
 
-# MBTI 목록
-mbti_list = [
+# -----------------------
+# 데이터
+# -----------------------
+MBTIS = [
     "INTJ","INTP","ENTJ","ENTP",
     "INFJ","INFP","ENFJ","ENFP",
     "ISTJ","ISFJ","ESTJ","ESFJ",
     "ISTP","ISFP","ESTP","ESFP"
 ]
 
-# 제목
-st.set_page_config(page_title="MBTI 3인 궁합 테스트", page_icon="💌")
-st.markdown("<div class='title'>💌 MBTI 3인 궁합 테스트 💌<br>✨ 귀엽고 예쁘게 궁합 보기 ✨</div>", unsafe_allow_html=True)
+# 인기 조합 보너스(양방향 포함)
+BONUS = {
+    ("INTJ","ENFP"): 8, ("ENFP","INTJ"): 8,
+    ("INFJ","ENFP"): 6, ("ENFP","INFJ"): 6,
+    ("ISTJ","ESFP"): 6, ("ESFP","ISTJ"): 6,
+    ("INTP","ENTJ"): 5, ("ENTJ","INTP"): 5,
+    ("ISFP","ESFJ"): 5, ("ESFJ","ISFP"): 5,
+    ("ISTP","ESTJ"): 5, ("ESTJ","ISTP"): 5,
+}
 
-# 궁합 표시 함수
-def show_compat(pair):
-    if pair in compatibility:
-        data = compatibility[pair]
-        st.markdown(
-            f"<div class='result-card good'><b>{pair[0]} ❤️ {pair[1]}</b><br>점수: {data['score']}<br>{data['desc']}</div>",
-            unsafe_allow_html=True
-        )
-    else:
-        st.markdown(
-            f"<div class='result-card neutral'><b>{pair[0]} ❤️ {pair[1]}</b><br>🤔 데이터가 없습니다.</div>",
-            unsafe_allow_html=True
-        )
+# 각 축 설명(같음/보완)
+DIM_TEXT = {
+    "E": ("둘 다 외향적이라 에너지가 UP! 함께 활동 계획 세우기 좋아요.", "에너지가 다른 만큼 서로 페이스 조절이 필요해요."),
+    "I": ("둘 다 내향적이라 편안한 분위기 유지에 강점!", "서로의 휴식/활동 리듬을 이해하려는 노력이 포인트."),
+    "S": ("현실 감각이 비슷해 실행력이 좋습니다.", "상상과 현실의 밸런스를 맞추면 시너지!"),
+    "N": ("아이디어 대화가 술술~ 비전 공유에 강점!", "한쪽은 비전, 한쪽은 현실 체크로 균형을 잡아보세요."),
+    "T": ("논리/원칙이 통일되어 의사결정이 빠릅니다.", "논리 vs 감정의 관점 차이를 존중하는 대화가 필요해요."),
+    "F": ("감정 공감이 잘 맞아 관계 만족도가 높아요.", "상대의 감정 신호를 놓치지 않도록 주의!"),
+    "J": ("계획형 콤비라 일정/약속 관리가 안정적!", "자유도와 안정감의 균형 잡기가 관건."),
+    "P": ("유연하게 즉흥 즐기기 GOOD!", "서로의 자유/계획 선호를 미리 합의하면 편해요.")
+}
 
-# 홈 화면
-if not st.session_state.show_results:
-    st.write("당신과 친구 2명의 MBTI를 선택하면, 각 조합의 궁합을 알려드립니다! 🎀")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        user_mbti = st.selectbox("당신", mbti_list, key="user")
-    with col2:
-        friend1_mbti = st.selectbox("친구 1", mbti_list, key="friend1")
-    with col3:
-        friend2_mbti = st.selectbox("친구 2", mbti_list, key="friend2")
+# -----------------------
+# 점수 규칙
+# - 기본 50점
+# - 같은 글자당 +12.5 (최대 +50 → 100)
+# - 일부 인기 조합 보너스 +5~8
+# -----------------------
+def compatibility_score(a: str, b: str):
+    base = 50.0
+    same = sum(1 for x, y in zip(a, b) if x == y)
+    score = base + same * 12.5
+    score += BONUS.get((a,b), 0)
 
-    if st.button("✨ 궁합 확인하기 ✨"):
-        st.session_state.show_results = True
-        st.session_state.results = [
-            (user_mbti, friend1_mbti),
-            (user_mbti, friend2_mbti),
-            (friend1_mbti, friend2_mbti)
-        ]
+    # 캡핑
+    score = max(0, min(100, round(score, 1)))
+    return score
 
-# 결과 화면
-else:
-    st.subheader("🔍 궁합 결과")
-    for pair in st.session_state.results:
-        show_compat(pair)
+def dimension_notes(a: str, b: str):
+    notes = []
+    for i, (x, y) in enumerate(zip(a, b)):
+        dim_pair = ["EI","SN","TF","JP"][i]
+        if x == y:
+            notes.append(f"{dim_pair}: {DIM_TEXT[x][0]}")
+        else:
+            # 상보 설명은 서로 다른 경우 x 기준 문구의 보완 설명 사용
+            notes.append(f"{dim_pair}: {DIM_TEXT[x][1]}")
+    return notes
 
-    if st.button("🏠 홈으로 돌아가기"):
-        st.session_state.show_results = False
-        st.experimental_rerun()
+def short_summary(score):
+    if score >= 90: return "💖 환상의 케미! 서로가 서로의 최애 팀메이트."
+    if score >= 80: return "💞 케미 좋음! 대체로 잘 맞고 성장 가능성 높아요."
+    if score >= 70: return "✨ 무난-좋음. 몇 가지만 맞추면 훨씬 좋아져요."
+    if score >= 60: return "🙂 보통. 관점 차이를 이해하면 편해져요."
+    if score >= 50: return "🤝 노력형 케미. 소통 루틴을 만들면 안정됩니다."
+    return "🌥️ 도전! 규칙/대화 방식 합의가 핵심 포인트."
+
+# -----------------------
+# 입력 UI
+# -----------------------
+c1, c2 = st.columns(2)
+with c1:
+    a = st.selectbox("사람 A의 MBTI", MBTIS, index=MBTIS.index("ENFP"))
+with c2:
+    b = st.selectbox("사람 B의 MBTI", MBTIS, index=MBTIS.index("INTJ"))
+
+st.markdown("<div class='sep'></div>", unsafe_allow_html=True)
+
+if st.button("궁합 확인하기 💫"):
+    score = compatibility_score(a, b)
+    notes = dimension_notes(a, b)
+    summary = short_summary(score)
+
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown(f"<div class='score'>궁합 점수: <span class='badge'>{score}</span> / 100</div>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align:center;margin:0 0 8px 0'>{a} ❤️ {b}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align:center;margin:4px 0 0 0'>{summary}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("**강점/주의 포인트**", unsafe_allow_html=True)
+    for n in notes:
+        st.markdown(f"<span class='pill'>{n}</span>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("<div class='hint'>※ 재미용 간단 테스트입니다. 실제 궁합은 개인차가 큽니다 🙂</div>", unsafe_allow_html=True)
+st.markdown("---")
+st.caption("Made with 💝 using Streamlit")
+
 
 # 푸터
 st.markdown("---")
