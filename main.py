@@ -1,68 +1,77 @@
 import streamlit as st
-import time
 
 # -----------------------
 # 페이지 & 스타일
 # -----------------------
-st.set_page_config(page_title="MBTI 2인 궁합 테스트", page_icon="💌")
+st.set_page_config(page_title="☁️ MBTI 하늘 궁합 테스트", page_icon="☁️")
 
 st.markdown("""
 <style>
-body { background: #FFF9FB; }
-@keyframes fadeInScale {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
+body {
+    background: linear-gradient(180deg, #B5EFFF 0%, #FFD6F6 100%);
+    font-family: 'Segoe UI', sans-serif;
 }
-@keyframes shimmer {
-    0% { background-position: -200px 0; }
-    100% { background-position: 200px 0; }
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
-.title {
-  text-align:center; font-size: 32px; font-weight: 800; color:#FF6F91;
-  padding: 8px 0 2px 0;
-}
-.sub {
-  text-align:center; color:#555; margin-bottom: 12px;
-}
-.card {
-  background:#FFFFFF; border-radius:18px; padding:18px; 
-  box-shadow: 0 6px 24px rgba(255,111,145,.15);
-  margin: 8px 0;
-  animation: fadeInScale 0.5s ease forwards;
+.cloud-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 12px 0;
+    box-shadow: 0 8px 30px rgba(255,255,255,0.6);
+    animation: fadeUp 0.8s ease forwards;
 }
 .score {
-  font-size: 32px; font-weight:700; text-align:center; margin: 6px 0 2px 0;
-  background: linear-gradient(90deg, #FF6F91, #FFC3A0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.badge {
-  display:inline-block; padding:6px 10px; border-radius:999px; 
-  background:#FFE4EC; color:#FF3B7A; font-weight:700; font-size:13px;
-}
-.pill {
-  display:inline-block; padding:6px 10px; border-radius:10px; 
-  background:#F6F6FF; margin-right:6px; margin-bottom:6px; font-size:13px;
+    font-size: 38px;
+    font-weight: 800;
+    text-align: center;
+    background: radial-gradient(circle at 50% 50%, #FFD54F, #FF6F91);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
 }
 .stButton>button {
-  background:#FF9AA2; color:#fff; border-radius:12px; padding:10px 18px;
-  font-size:16px; transition:.2s; border:0;
-  box-shadow: 0 0 10px rgba(255,111,145,0.5);
+    background: linear-gradient(90deg, #A7E9FF, #FFD6F6);
+    color: #333;
+    border-radius: 25px;
+    padding: 10px 22px;
+    font-size: 16px;
+    border: none;
+    box-shadow: 0 6px 20px rgba(255,255,255,0.7);
+    transition: all 0.3s ease;
 }
-.stButton>button:hover { background:#FF6F91; transform: translateY(-1px) scale(1.02); box-shadow: 0 0 15px rgba(255,111,145,0.7); }
-.hint { color:#777; font-size:13px; text-align:center; }
-.sep { height:10px; }
-.sparkle {
-  background: linear-gradient(90deg, #fff5f7 25%, #ffe4ec 50%, #fff5f7 75%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite linear;
-  padding: 10px; border-radius: 12px;
+.stButton>button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255,255,255,0.9);
+}
+.mbti-pill {
+    display:inline-block; 
+    padding: 6px 10px; 
+    margin: 4px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    font-size: 13px;
+    box-shadow: 0 3px 8px rgba(255,255,255,0.5);
+}
+.subtitle {
+    text-align:center; 
+    color:#fff; 
+    font-size:16px;
+    margin-bottom: 16px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.title {
+    text-align:center; 
+    font-size: 34px; 
+    font-weight: 900; 
+    color: white; 
+    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 </style>
 """, unsafe_allow_html=True)
-
-st.markdown("<div class='title'>💌 MBTI 2인 궁합 테스트</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub'>두 사람의 MBTI를 선택하고 궁합을 확인해보세요! ✨</div>", unsafe_allow_html=True)
 
 # -----------------------
 # 데이터
@@ -112,43 +121,42 @@ def dimension_notes(a: str, b: str):
     return notes
 
 def short_summary(score):
-    if score >= 90: return "💖 환상의 케미!"
-    if score >= 80: return "💞 좋은 케미!"
-    if score >= 70: return "✨ 무난-좋음"
-    if score >= 60: return "🙂 보통"
+    if score >= 90: return "🌈 환상의 케미!"
+    if score >= 80: return "☀️ 좋은 케미!"
+    if score >= 70: return "💙 무난-좋음"
+    if score >= 60: return "⛅ 보통"
     if score >= 50: return "🤝 노력형 케미"
-    return "🌥️ 도전 필요"
+    return "🌧️ 도전 필요"
 
 # -----------------------
-# 입력 UI
+# UI
 # -----------------------
-c1, c2 = st.columns(2)
-with c1:
-    a = st.selectbox("사람 A의 MBTI", MBTIS, index=MBTIS.index("ENFP"))
-with c2:
-    b = st.selectbox("사람 B의 MBTI", MBTIS, index=MBTIS.index("INTJ"))
+st.markdown("<div class='title'>☁️ MBTI 궁합 테스트</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>두 사람의 MBTI를 선택하고 하늘 위에서 궁합을 확인하세요</div>", unsafe_allow_html=True)
 
-st.markdown("<div class='sep'></div>", unsafe_allow_html=True)
+col1, col2 = st.columns(2)
+with col1:
+    a = st.selectbox("사람 A", MBTIS, index=MBTIS.index("ENFP"))
+with col2:
+    b = st.selectbox("사람 B", MBTIS, index=MBTIS.index("INTJ"))
 
-if st.button("궁합 확인하기 💫"):
+if st.button("궁합 확인하기 ✨"):
     score = compatibility_score(a, b)
     notes = dimension_notes(a, b)
     summary = short_summary(score)
 
-    bg_class = "sparkle" if score >= 85 else ""
-
-    st.markdown(f"<div class='card {bg_class}'>", unsafe_allow_html=True)
+    st.markdown("<div class='cloud-card'>", unsafe_allow_html=True)
     st.markdown(f"<div class='score'>{score} / 100</div>", unsafe_allow_html=True)
-    st.markdown(f"<p style='text-align:center;margin:0 0 8px 0'>{a} ❤️ {b}</p>", unsafe_allow_html=True)
-    st.markdown(f"<p style='text-align:center;margin:4px 0 0 0'>{summary}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align:center; margin-top:0'>{a} ☁️ {b}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align:center; margin-top:8px'>{summary}</p>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.markdown("**강점/주의 포인트**", unsafe_allow_html=True)
+    st.markdown("<div class='cloud-card'>", unsafe_allow_html=True)
+    st.markdown("**구름 속 분석**", unsafe_allow_html=True)
     for n in notes:
-        st.markdown(f"<span class='pill'>{n}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span class='mbti-pill'>{n}</span>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("<div class='hint'>※ 재미용 간단 테스트입니다 🙂</div>", unsafe_allow_html=True)
 st.markdown("---")
-st.caption("Made with 💝 using Streamlit")
+st.caption("Made with ☁️ and 💙 using Streamlit")
+
