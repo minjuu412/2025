@@ -2,55 +2,83 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
+// Simple, ASCII-only version to avoid emoji/encoding issues
 export default function App() {
   const [points, setPoints] = useState(0);
   const [trees, setTrees] = useState(0);
+  const [history, setHistory] = useState([]);
 
-  // 포인트 추가 (예: 미션 완료)
-  const earnPoints = (amount) => {
-    setPoints((prev) => prev + amount);
-  };
+  const TREE_COST = 100; // points needed per tree
 
-  // 일정 포인트로 나무 심기 (예: 100포인트 = 1그루)
+  const earnPoints = (amount) => setPoints((prev) => prev + amount);
+
   const plantTree = () => {
-    if (points >= 100) {
-      setPoints((prev) => prev - 100);
-      setTrees((prev) => prev + 1);
-      alert("🎉 나무 1그루가 심어졌습니다!");
-    } else {
-      alert("포인트가 부족합니다. 100포인트가 필요해요.");
-    }
+    if (points < TREE_COST) return;
+    setPoints((prev) => prev - TREE_COST);
+    setTrees((prev) => prev + 1);
+    setHistory((prev) => [
+      { id: Date.now(), when: new Date().toISOString(), cost: TREE_COST },
+      ...prev,
+    ]);
   };
+
+  const needed = Math.max(0, TREE_COST - points);
 
   return (
     <div className="p-6 grid gap-6">
-      <h1 className="text-2xl font-bold">🌱 포인트 숲</h1>
+      <h1 className="text-2xl font-bold">Point Forest</h1>
 
-      {/* 현재 상태 */}
+      {/* Status */}
       <Card>
         <CardContent className="p-4">
-          <h2 className="text-xl mb-2">내 현황</h2>
-          <p>현재 포인트: {points} 점</p>
-          <p>내가 심은 나무: {trees} 그루</p>
+          <h2 className="text-xl mb-2">My Status</h2>
+          <p>Points: {points}</p>
+          <p>Trees planted: {trees}</p>
         </CardContent>
       </Card>
 
-      {/* 포인트 적립 버튼 */}
+      {/* Earn points */}
       <Card>
         <CardContent className="p-4 space-y-2">
-          <h2 className="text-xl mb-2">포인트 적립</h2>
-          <Button onClick={() => earnPoints(10)}>+10점 (미션 완료)</Button>
-          <Button onClick={() => earnPoints(50)}>+50점 (특별 챌린지)</Button>
+          <h2 className="text-xl mb-2">Earn Points</h2>
+          <div className="flex gap-2 flex-wrap">
+            <Button onClick={() => earnPoints(10)}>+10 (mission)</Button>
+            <Button onClick={() => earnPoints(50)}>+50 (challenge)</Button>
+            <Button onClick={() => earnPoints(100)}>+100 (sponsor)</Button>
+          </div>
         </CardContent>
       </Card>
 
-      {/* 나무 심기 */}
+      {/* Plant a tree */}
       <Card>
         <CardContent className="p-4">
-          <h2 className="text-xl mb-2">나무 심기</h2>
-          <Button onClick={plantTree} disabled={points < 100}>
-            🌳 100포인트로 나무 심기
-          </Button>
+          <h2 className="text-xl mb-2">Plant a Tree</h2>
+          <div className="flex items-center gap-3">
+            <Button onClick={plantTree} disabled={points < TREE_COST}>
+              Plant with {TREE_COST} points
+            </Button>
+            {points < TREE_COST && (
+              <span className="text-sm">Need {needed} more points</span>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* History */}
+      <Card>
+        <CardContent className="p-4">
+          <h2 className="text-xl mb-2">Planting History</h2>
+          {history.length === 0 ? (
+            <p>No trees planted yet.</p>
+          ) : (
+            <ul className="space-y-1">
+              {history.map((h) => (
+                <li key={h.id} className="text-sm">
+                  {h.when} - planted 1 tree ({h.cost} points)
+                </li>
+              ))}
+            </ul>
+          )}
         </CardContent>
       </Card>
     </div>
