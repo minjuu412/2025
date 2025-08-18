@@ -1,14 +1,19 @@
+# -------------------------------------------------
+# This is a React app (JSX). Do NOT run with Python.
+# Save this file as App.jsx (or App.tsx) and run in
+# a React environment (e.g., Next.js, Vite, CRA).
+# -------------------------------------------------
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Simple, ASCII-only version to avoid emoji/encoding issues
 export default function App() {
   const [points, setPoints] = useState(0);
   const [trees, setTrees] = useState(0);
   const [history, setHistory] = useState([]);
 
-  const TREE_COST = 100; // points needed per tree
+  const TREE_COST = 100;
 
   const earnPoints = (amount) => setPoints((prev) => prev + amount);
 
@@ -28,7 +33,6 @@ export default function App() {
     <div className="p-6 grid gap-6">
       <h1 className="text-2xl font-bold">Point Forest</h1>
 
-      {/* Status */}
       <Card>
         <CardContent className="p-4">
           <h2 className="text-xl mb-2">My Status</h2>
@@ -37,7 +41,6 @@ export default function App() {
         </CardContent>
       </Card>
 
-      {/* Earn points */}
       <Card>
         <CardContent className="p-4 space-y-2">
           <h2 className="text-xl mb-2">Earn Points</h2>
@@ -49,7 +52,6 @@ export default function App() {
         </CardContent>
       </Card>
 
-      {/* Plant a tree */}
       <Card>
         <CardContent className="p-4">
           <h2 className="text-xl mb-2">Plant a Tree</h2>
@@ -64,7 +66,6 @@ export default function App() {
         </CardContent>
       </Card>
 
-      {/* History */}
       <Card>
         <CardContent className="p-4">
           <h2 className="text-xl mb-2">Planting History</h2>
