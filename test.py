@@ -1,87 +1,74 @@
 # -------------------------------------------------
-# This is a React app (JSX). Do NOT run with Python.
-# Save this file as App.jsx (or App.tsx) and run in
-# a React environment (e.g., Next.js, Vite, CRA).
+# This is a simple Python simulation of the Point Forest app.
+# Save this file as test.py and run with Python (no React/JSX).
 # -------------------------------------------------
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import time
 
-export default function App() {
-  const [points, setPoints] = useState(0);
-  const [trees, setTrees] = useState(0);
-  const [history, setHistory] = useState([]);
+class PointForest:
+    def __init__(self):
+        self.points = 0
+        self.trees = 0
+        self.history = []
+        self.TREE_COST = 100
 
-  const TREE_COST = 100;
+    def earn_points(self, amount):
+        self.points += amount
+        print(f"Earned {amount} points. Total points: {self.points}")
 
-  const earnPoints = (amount) => setPoints((prev) => prev + amount);
+    def plant_tree(self):
+        if self.points < self.TREE_COST:
+            print(f"Not enough points. Need {self.TREE_COST - self.points} more.")
+            return
+        self.points -= self.TREE_COST
+        self.trees += 1
+        event = {
+            "when": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "cost": self.TREE_COST
+        }
+        self.history.insert(0, event)
+        print(f"Planted a tree! Trees: {self.trees}, Remaining points: {self.points}")
 
-  const plantTree = () => {
-    if (points < TREE_COST) return;
-    setPoints((prev) => prev - TREE_COST);
-    setTrees((prev) => prev + 1);
-    setHistory((prev) => [
-      { id: Date.now(), when: new Date().toISOString(), cost: TREE_COST },
-      ...prev,
-    ]);
-  };
+    def show_status(self):
+        print("\n--- My Status ---")
+        print(f"Points: {self.points}")
+        print(f"Trees planted: {self.trees}")
+        if not self.history:
+            print("No planting history yet.")
+        else:
+            print("History:")
+            for h in self.history:
+                print(f"  {h['when']} - planted 1 tree ({h['cost']} points)")
 
-  const needed = Math.max(0, TREE_COST - points);
 
-  return (
-    <div className="p-6 grid gap-6">
-      <h1 className="text-2xl font-bold">Point Forest</h1>
+def main():
+    app = PointForest()
+    while True:
+        print("\nChoose an action:")
+        print("1. Earn 10 points (mission)")
+        print("2. Earn 50 points (challenge)")
+        print("3. Earn 100 points (sponsor)")
+        print("4. Plant a tree")
+        print("5. Show status")
+        print("0. Exit")
+        choice = input("> ").strip()
 
-      <Card>
-        <CardContent className="p-4">
-          <h2 className="text-xl mb-2">My Status</h2>
-          <p>Points: {points}</p>
-          <p>Trees planted: {trees}</p>
-        </CardContent>
-      </Card>
+        if choice == "1":
+            app.earn_points(10)
+        elif choice == "2":
+            app.earn_points(50)
+        elif choice == "3":
+            app.earn_points(100)
+        elif choice == "4":
+            app.plant_tree()
+        elif choice == "5":
+            app.show_status()
+        elif choice == "0":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid option.")
 
-      <Card>
-        <CardContent className="p-4 space-y-2">
-          <h2 className="text-xl mb-2">Earn Points</h2>
-          <div className="flex gap-2 flex-wrap">
-            <Button onClick={() => earnPoints(10)}>+10 (mission)</Button>
-            <Button onClick={() => earnPoints(50)}>+50 (challenge)</Button>
-            <Button onClick={() => earnPoints(100)}>+100 (sponsor)</Button>
-          </div>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardContent className="p-4">
-          <h2 className="text-xl mb-2">Plant a Tree</h2>
-          <div className="flex items-center gap-3">
-            <Button onClick={plantTree} disabled={points < TREE_COST}>
-              Plant with {TREE_COST} points
-            </Button>
-            {points < TREE_COST && (
-              <span className="text-sm">Need {needed} more points</span>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-4">
-          <h2 className="text-xl mb-2">Planting History</h2>
-          {history.length === 0 ? (
-            <p>No trees planted yet.</p>
-          ) : (
-            <ul className="space-y-1">
-              {history.map((h) => (
-                <li key={h.id} className="text-sm">
-                  {h.when} - planted 1 tree ({h.cost} points)
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
+if __name__ == "__main__":
+    main()
