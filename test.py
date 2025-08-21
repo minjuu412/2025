@@ -17,7 +17,7 @@ zodiac_dates = {
     "물고기자리": ((2, 19), (3, 20)),
 }
 
-# 혈액형 + 별자리 스타일 추천 예시
+# 혈액형 + 별자리 스타일 추천
 style_recommendations = {
     "A": {
         "양자리": "활동적이면서 스포티한 스타일 추천!",
@@ -80,7 +80,10 @@ style_recommendations = {
 # 생일 → 별자리 계산 함수
 def get_zodiac(month, day):
     for zodiac, ((start_month, start_day), (end_month, end_day)) in zodiac_dates.items():
-        if (month == start_month and day >= start_day) or (month == end_month and day <= end_day) or (start_month < month < end_month) or (start_month > end_month and (month > start_month or month < end_month)):
+        if (month == start_month and day >= start_day) or \
+           (month == end_month and day <= end_day) or \
+           (start_month < month < end_month) or \
+           (start_month > end_month and (month > start_month or month < end_month)):
             return zodiac
     return None
 
@@ -89,11 +92,19 @@ st.title("오늘의 외출 스타일 추천 💃🕺")
 st.write("혈액형과 생일을 입력하면 오늘의 외출 스타일을 추천해드립니다!")
 
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "AB", "O"])
-birthday = st.date_input("생일을 선택하세요", datetime.today())
+
+# 생일 입력 (2000 ~ 2025)
+min_date = datetime(2000, 1, 1)
+max_date = datetime(2025, 12, 31)
+birthday = st.date_input(
+    "생일을 선택하세요",
+    value=datetime.today(),
+    min_value=min_date,
+    max_value=max_date
+)
 
 month = birthday.month
 day = birthday.day
-
 zodiac = get_zodiac(month, day)
 
 if st.button("스타일 추천 받기"):
