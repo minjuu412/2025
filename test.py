@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 from datetime import datetime
 
 # 12별자리 날짜 구간
@@ -87,9 +88,19 @@ def get_zodiac(month, day):
             return zodiac
     return None
 
+# Unsplash에서 이미지 검색
+def get_image_url(query):
+    access_key = "YOUR_UNSPLASH_ACCESS_KEY"  # Unsplash API 키 필요
+    url = f"https://api.unsplash.com/photos/random?query={query}&client_id={access_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data['urls']['regular']
+    return None
+
 # Streamlit UI
 st.title("오늘의 외출 스타일 추천 💃🕺")
-st.write("혈액형과 생일을 입력하면 오늘의 외출 스타일을 추천해드립니다!")
+st.write("혈액형과 생일을 입력하면 오늘의 외출 스타일과 패션 이미지를 추천해드립니다!")
 
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "AB", "O"])
 
@@ -109,8 +120,16 @@ zodiac = get_zodiac(month, day)
 
 if st.button("스타일 추천 받기"):
     if zodiac:
-        style = style_recommendations[blood_type][zodiac]
+        style_message = style_recommendations[blood_type][zodiac]
         st.success(f"당신의 별자리는 **{zodiac}** 입니다! 🎯")
-        st.info(f"오늘의 외출 스타일 추천: {style}")
+        st.info(f"오늘의 외출 스타일 추천: {style_message}")
+
+        # 이미지 검색 및 표시
+        query = f"{blood_type} {zodiac} outfit"
+        image_url = get_image_url(query)
+        if image_url:
+            st.image(image_url, caption=f"{blood_type} {zodiac} 스타일", use_column_width=True)
+        else:
+            st.warning("관련 이미지를 찾을 수 없습니다.")
     else:
         st.error("별자리를 계산할 수 없습니다. 날짜를 확인해주세요.")
