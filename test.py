@@ -30,14 +30,24 @@ st.title("✨ 오늘의 운세 & 스타일 추천 ✨")
 
 # 사용자 입력
 name = st.text_input("이름을 입력하세요")
-birthday = st.date_input("생일을 선택하세요")
+
+gender = st.selectbox("성별을 선택하세요", ["남성", "여성", "기타"])
+
+birthday = st.date_input(
+    "생일을 선택하세요",
+    min_value=date(2000, 1, 1),
+    max_value=date(2025, 12, 31)
+)
+
+mood = st.radio("오늘의 기분은 어떤가요?", ["😊 좋음", "😐 보통", "😢 우울"])
 
 if st.button("오늘의 운세 보기"):
     today = date.today()
-    # 간단한 난수 기반 운세 선택 (이름+날짜 조합으로 고정되도록)
-    seed = hash(name + str(today)) % len(fortune_data)
+    # 간단한 난수 기반 운세 선택 (이름+생일+기분 조합으로 결정)
+    seed = hash(name + str(birthday) + mood) % len(fortune_data)
     fortune = list(fortune_data.keys())[seed]
     
     st.subheader(f"오늘의 운세: {fortune}")
     st.write(f"👗 추천 스타일: {fortune_data[fortune]['style']}")
     st.write(f"💡 팁: {fortune_data[fortune]['tip']}")
+    st.success(f"{name}님({gender}), 오늘도 좋은 하루 되세요! 🌟")
