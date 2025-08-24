@@ -1,95 +1,91 @@
+# streamlit run app.py
 import streamlit as st
 from datetime import datetime
 import random
 
-# ----------------- 스타일 (디자인용 CSS) -----------------
-page_bg = """
+# ===================== 🌙 Dreamy Night-Sky THEME (CSS) =====================
+THEME = """
 <style>
+/* App background: dreamy night gradient */
 .stApp {
-    background: linear-gradient(to bottom, #0d1b2a, #1b263b, #415a77);
-    color: #f1faee;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(180deg, #0b1020 0%, #14213d 50%, #233a66 100%);
+  color: #f8f9fa;
+  font-family: 'Comic Sans MS', 'Baloo 2', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
-/* 별 효과 */
-.stApp::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("https://cdn.pixabay.com/photo/2017/08/30/01/05/stars-2695569_1280.png");
-    background-size: cover;
-    opacity: 0.15;
-    z-index: -1;
+/* Tiny stars overlay */
+.stApp::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:url("https://cdn.pixabay.com/photo/2017/08/30/01/05/stars-2695569_1280.png");
+  background-size:cover;
+  opacity:.18;
+  pointer-events:none;
+  z-index:-1;
 }
 
-/* 제목 */
-h1 {
-    text-align: center;
-    font-size: 3em !important;
-    color: #ffe066 !important;
-    text-shadow: 2px 2px 6px #00000088;
+/* Title */
+h1, .stMarkdown h1 {
+  text-align:center;
+  font-size:2.8rem !important;
+  color:#ffe066 !important;
+  text-shadow:0 3px 14px rgba(0,0,0,.45);
+  margin-top:.5rem;
 }
 
-/* 버튼 꾸미기 */
-button[kind="primary"] {
-    background-color: #ffb4a2 !important;
-    border-radius: 20px !important;
-    color: white !important;
-    font-weight: bold !important;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+/* Inputs card feel */
+.block-container { padding-top: 1.2rem; }
+.css-1vbkxwb, .stSelectbox, .stDateInput { filter: drop-shadow(0 6px 16px rgba(0,0,0,.15)); }
+
+/* Labels */
+label, .stMarkdown p { color:#f1f3f5 !important; }
+
+/* Button (primary) */
+div.stButton > button {
+  background: linear-gradient(135deg, #ffb4a2, #ffa69e);
+  color: #1b1b1b;
+  font-weight: 700;
+  border-radius: 18px;
+  border: 0;
+  padding: .6rem 1.1rem;
+  box-shadow: 0 6px 18px rgba(255,166,158,.35);
+}
+div.stButton > button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* Result cards (glassmorphism) */
+[data-testid="stNotification"], [data-testid="stVerticalBlock"] > div:has(> .stAlert){
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(8px);
 }
 
-/* 카드 효과 */
-.stSuccess, .stInfo {
-    border-radius: 20px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(8px);
-    padding: 15px;
-    font-size: 1.1em;
-}
+/* Image soft shadow + rounded */
+img { border-radius: 18px !important; box-shadow: 0 8px 28px rgba(0,0,0,.35); }
 </style>
 """
-st.markdown(page_bg, unsafe_allow_html=True)
+st.markdown(THEME, unsafe_allow_html=True)
 
-# ----------------- 랜덤 스티커 -----------------
-stickers = [
-    "https://cdn-icons-png.flaticon.com/512/616/616408.png",  # 곰돌이
-    "https://cdn-icons-png.flaticon.com/512/1864/1864514.png", # 고양이
-    "https://cdn-icons-png.flaticon.com/512/1829/1829586.png", # 별
-    "https://cdn-icons-png.flaticon.com/512/1234/1234551.png", # 달
-    "https://cdn-icons-png.flaticon.com/512/742/742751.png"   # 토끼
+# =============== Cute Sticker Sprinkles (Twemoji PNG, no hotlink issues) ===============
+STICKERS = [
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43b.png",  # bear face
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f431.png",  # cat face
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2b50.png",  # star
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f319.png",  # crescent moon
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f430.png",  # rabbit face
 ]
-
-# 스티커를 여러 개 랜덤으로 뿌리기
-for i in range(3):  # 최대 3개 스티커
-    sticker_url = random.choice(stickers)
-    left = random.randint(0, 80)   # 화면 좌측~우측 %
-    top = random.randint(60, 90)   # 화면 아래쪽 %
-    size = random.randint(60, 100) # 크기 px
-    
+for _ in range(4):  # show 4 random stickers near the bottom like stickers
+    url = random.choice(STICKERS)
+    left = random.randint(2, 85)    # %
+    top  = random.randint(70, 92)   # %
+    size = random.randint(60, 96)   # px
     st.markdown(
-        f"""
-        <img src="{sticker_url}" 
-             style="position:fixed; left:{left}%; top:{top}%; 
-                    width:{size}px; z-index:10;">
-        """,
+        f"""<img src="{url}" style="
+            position:fixed; left:{left}%; top:{top}%;
+            width:{size}px; z-index:12; opacity:.92;">""",
         unsafe_allow_html=True
     )
 
-# ----------------- 앱 본문 -----------------
-st.title("✨ 오늘의 외출 스타일 추천 ✨")
-
-blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "AB", "O"])
-min_date = datetime(2000, 1, 1)
-max_date = datetime(2025, 12, 31)
-birthday = st.date_input("생일을 선택하세요", value=datetime.today(), min_value=min_date, max_value=max_date)
-import streamlit as st
-from datetime import datetime
-
-# 12별자리 날짜 구간
+# ===================== Zodiac ranges =====================
 zodiac_dates = {
     "양자리": ((3, 21), (4, 19)),
     "황소자리": ((4, 20), (5, 20)),
@@ -105,11 +101,20 @@ zodiac_dates = {
     "물고기자리": ((2, 19), (3, 20)),
 }
 
-# 이미지 URL 뒤에 썸네일 파라미터 붙이기 함수
-def fix_url(url):
-    return f"{url}?auto=format&fit=crop&w=800&q=80"
+def get_zodiac(month: int, day: int) -> str | None:
+    for zodiac, ((sm, sd), (em, ed)) in zodiac_dates.items():
+        if (month == sm and day >= sd) or (month == em and day <= ed) \
+           or (sm < month < em) \
+           or (sm > em and (month > sm or month < em)):
+            return zodiac
+    return None
 
-# 혈액형 + 별자리 스타일 추천 및 이미지
+# Ensure Unsplash image URLs always render (thumb params)
+def fix_url(url: str) -> str:
+    joiner = "&" if "?" in url else "?"
+    return f"{url}{joiner}auto=format&fit=crop&w=900&q=80"
+
+# ===================== 48 combos: blood type × zodiac → (message, image) =====================
 style_recommendations = {
     "A": {
         "양자리": ("활동적이면서 스포티한 스타일 추천!", fix_url("https://images.unsplash.com/photo-1519741497674-611481863552")),
@@ -169,23 +174,11 @@ style_recommendations = {
     },
 }
 
-# 별자리 계산 함수
-def get_zodiac(month, day):
-    for zodiac, ((start_month, start_day), (end_month, end_day)) in zodiac_dates.items():
-        if (month == start_month and day >= start_day) or \
-           (month == end_month and day <= end_day) or \
-           (start_month < month < end_month) or \
-           (start_month > end_month and (month > start_month or month < end_month)):
-            return zodiac
-    return None
-
-# Streamlit UI
-st.title("오늘의 외출 스타일 추천 💃🕺")
-st.write("혈액형과 생일을 입력하면 오늘의 외출 스타일과 어울리는 이미지를 추천해드립니다!")
+# ===================== UI =====================
+st.title("✨ 오늘의 외출 스타일 추천 ✨")
 
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "AB", "O"])
 
-# 생일 입력 (2000 ~ 2025)
 min_date = datetime(2000, 1, 1)
 max_date = datetime(2025, 12, 31)
 birthday = st.date_input("생일을 선택하세요", value=datetime.today(), min_value=min_date, max_value=max_date)
@@ -196,10 +189,9 @@ zodiac = get_zodiac(month, day)
 
 if st.button("스타일 추천 받기"):
     if zodiac and blood_type in style_recommendations and zodiac in style_recommendations[blood_type]:
-        style_message, image_url = style_recommendations[blood_type][zodiac]
+        msg, img = style_recommendations[blood_type][zodiac]
         st.success(f"당신의 별자리는 **{zodiac}** 입니다! 🎯")
-        st.info(f"오늘의 외출 스타일 추천: {style_message}")
-        st.image(image_url, caption=f"{blood_type}형 {zodiac} 스타일", use_column_width=True)
+        st.info(f"오늘의 외출 스타일 추천: {msg}")
+        st.image(img, caption=f"{blood_type}형 {zodiac} 스타일", use_column_width=True)
     else:
-        st.error("추천 데이터를 찾을 수 없습니다. 다른 입력을 시도해보세요.")
-
+        st.error("추천 데이터를 찾을 수 없습니다. 입력을 확인해주세요.")
