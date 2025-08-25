@@ -103,6 +103,6 @@ style_recommendations = {
         "염소자리": ("클래식한 디자인으로 고급스러운 느낌!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
         "물병자리": ("독특한 디자인으로 개성 있는 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
         },
-::contentReference[oaicite:0]{index=0}}
+}
  
 
