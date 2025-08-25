@@ -1,105 +1,53 @@
-# streamlit run app.py
 import streamlit as st
 from datetime import datetime
 import random
 
-# ===================== 🌙 Dreamy Cute Night-Sky THEME (CSS) =====================
+# ===================== 디자인 (CSS) =====================
 THEME = """
 <style>
-/* App background: dreamy night gradient */
 .stApp {
   background: linear-gradient(180deg, #0b1020 0%, #1a2240 60%, #233a66 100%);
   color: #fffaf0;
-  font-family: 'Comic Sans MS', 'Baloo 2', cursive, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: 'Comic Sans MS', 'Baloo 2', cursive;
 }
-
-/* Tiny stars overlay */
 .stApp::before{
-  content:"";
-  position:fixed; inset:0;
+  content:""; position:fixed; inset:0;
   background-image:url("https://cdn.pixabay.com/photo/2017/08/30/01/05/stars-2695569_1280.png");
-  background-size:cover;
-  opacity:.22;
-  pointer-events:none;
-  z-index:-1;
+  background-size:cover; opacity:.22; z-index:-1;
 }
-
-/* Title */
-h1, .stMarkdown h1 {
-  text-align:center;
-  font-size:2.8rem !important;
-  color:#ffdd93 !important;   /* 밝은 파스텔 노랑 */
-  text-shadow:0 3px 10px rgba(0,0,0,.6);
-  margin-top:.5rem;
-}
-
-/* Subtext, labels */
-label, .stMarkdown p, .stMarkdown span {
-  color:#ffeedd !important;   /* 따뜻한 아이보리 */
-  font-weight:600;
-}
-
-/* Input widgets */
-.css-1vbkxwb, .stSelectbox, .stDateInput {
-  filter: drop-shadow(0 6px 16px rgba(0,0,0,.25));
-  border-radius:12px;
-}
-
-/* Button */
+h1 { text-align:center; font-size:2.6rem !important; color:#ffdd93 !important;
+     text-shadow:0 3px 10px rgba(0,0,0,.6);}
+label, .stMarkdown p, .stMarkdown span { color:#ffeedd !important; font-weight:600; }
 div.stButton > button {
   background: linear-gradient(135deg, #ffc6ff, #ffadad);
-  color: #442244;
-  font-weight: 700;
-  border-radius: 20px;
-  border: 2px solid #fffaf5;
-  padding: .6rem 1.3rem;
-  box-shadow: 0 5px 15px rgba(255,182,193,.4);
-  transition: all .2s ease;
+  color:#442244; font-weight:700; border-radius:20px; border:2px solid #fffaf5;
+  padding:.6rem 1.3rem; box-shadow:0 5px 15px rgba(255,182,193,.4);
 }
-div.stButton > button:hover {
-  filter: brightness(1.08);
-  transform: translateY(-2px) scale(1.03);
-}
-
-/* Result cards (glassmorphism) */
+div.stButton > button:hover { filter: brightness(1.08); transform:translateY(-2px) scale(1.03);}
 [data-testid="stNotification"], [data-testid="stVerticalBlock"] > div:has(> .stAlert){
-  border-radius: 20px !important;
-  background: rgba(255, 248, 250, .15) !important;
-  backdrop-filter: blur(12px);
-  color: #fffaf0 !important;
-  border: 1.5px dashed #ffd6f6;
+  border-radius:20px; background:rgba(255,248,250,.15) !important;
+  backdrop-filter: blur(12px); color:#fffaf0 !important; border:1.5px dashed #ffd6f6;
 }
-
-/* Image */
-img {
-  border-radius: 20px !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,.4);
-}
+img { border-radius:20px !important; box-shadow:0 8px 24px rgba(0,0,0,.4);}
 </style>
 """
 st.markdown(THEME, unsafe_allow_html=True)
 
-# =============== Cute Sticker Sprinkles ===============
+# ===================== 스티커 랜덤 =====================
 STICKERS = [
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43b.png",  # bear
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f431.png",  # cat
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f430.png",  # rabbit
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f319.png",  # moon
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2b50.png",  # star
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43b.png",  
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f431.png",  
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f430.png",  
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f319.png",  
+    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2b50.png",  
 ]
-for _ in range(5):  
+for _ in range(5):
     url = random.choice(STICKERS)
-    left = random.randint(3, 85)    
-    top  = random.randint(72, 92)   
-    size = random.randint(64, 96)   
-    st.markdown(
-        f"""<img src="{url}" style="
-            position:fixed; left:{left}%; top:{top}%;
-            width:{size}px; z-index:12; opacity:.95;">""",
-        unsafe_allow_html=True
-    )
+    left = random.randint(3, 85); top  = random.randint(72, 92); size = random.randint(64, 96)
+    st.markdown(f"""<img src="{url}" style="position:fixed; left:{left}%; top:{top}%;
+                width:{size}px; z-index:12; opacity:.95;">""", unsafe_allow_html=True)
 
-# ===================== Zodiac ranges =====================
+# ===================== 별자리 =====================
 zodiac_dates = {
     "양자리": ((3, 21), (4, 19)),
     "황소자리": ((4, 20), (5, 20)),
@@ -114,45 +62,45 @@ zodiac_dates = {
     "물병자리": ((1, 20), (2, 18)),
     "물고기자리": ((2, 19), (3, 20)),
 }
-def get_zodiac(month: int, day: int) -> str | None:
+def get_zodiac(month, day):
     for zodiac, ((sm, sd), (em, ed)) in zodiac_dates.items():
         if (month == sm and day >= sd) or (month == em and day <= ed) \
-           or (sm < month < em) \
-           or (sm > em and (month > sm or month < em)):
+           or (sm < month < em) or (sm > em and (month > sm or month < em)):
             return zodiac
     return None
 
-# Ensure Unsplash URLs render
-def fix_url(url: str) -> str:
+def fix_url(url):  # Unsplash 이미지 깨짐 방지
     joiner = "&" if "?" in url else "?"
     return f"{url}{joiner}auto=format&fit=crop&w=900&q=80"
 
-# ===================== Style DB (예시: 일부만 표시) =====================
+# ===================== 48개 추천 데이터 =====================
+# 각 혈액형-별자리마다 텍스트와 이미지 지정
 style_recommendations = {
     "A": {
         "양자리": ("활동적이면서 스포티한 스타일 추천!", fix_url("https://images.unsplash.com/photo-1519741497674-611481863552")),
         "황소자리": ("편안한 캐주얼로 안정감 있는 느낌!", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        # ... 나머지도 동일하게 입력
+        "쌍둥이자리": ("다채로운 컬러와 패턴으로 개성 표현!", fix_url("https://images.unsplash.com/photo-1593642634311-e4b3a7e3d3b0")),
+        "게자리": ("부드러운 색감과 여성스러운 실루엣 추천!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "사자자리": ("강렬한 레드와 골드로 자신감 있는 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "처녀자리": ("심플하고 깔끔한 라인으로 세련된 느낌!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "천칭자리": ("밸런스 잡힌 디자인으로 우아한 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "전갈자리": ("강렬한 블랙과 레드로 신비로운 매력!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "사수자리": ("자유로운 분위기의 캐주얼한 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "염소자리": ("클래식한 디자인으로 고급스러운 느낌!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "물병자리": ("독특한 디자인으로 개성 있는 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "물고기자리": ("몽환적인 색감과 레이스로 로맨틱한 느낌!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
     },
-    # B, AB, O도 동일하게...
-}
-
-# ===================== UI =====================
-st.title("🌙✨ 오늘의 외출 스타일 추천 ✨⭐")
-
-blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "AB", "O"])
-min_date = datetime(2000, 1, 1)
-max_date = datetime(2025, 12, 31)
-birthday = st.date_input("생일을 선택하세요", value=datetime.today(), min_value=min_date, max_value=max_date)
-
-month, day = birthday.month, birthday.day
-zodiac = get_zodiac(month, day)
-
-if st.button("⭐ 스타일 추천 받기 ⭐"):
-    if zodiac and blood_type in style_recommendations and zodiac in style_recommendations[blood_type]:
-        msg, img = style_recommendations[blood_type][zodiac]
-        st.success(f"당신의 별자리는 **{zodiac}** 입니다! 🌟")
-        st.info(f"오늘의 추천: {msg}")
-        st.image(img, caption=f"{blood_type}형 {zodiac} 스타일", use_column_width=True)
-    else:
-        st.error("추천 데이터를 찾을 수 없습니다. 입력을 확인해주세요.")
+    "B": {
+        "양자리": ("활동적이면서 스포티한 스타일 추천!", fix_url("https://images.unsplash.com/photo-1519741497674-611481863552")),
+        "황소자리": ("편안한 캐주얼로 안정감 있는 느낌!", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
+        "쌍둥이자리": ("다채로운 컬러와 패턴으로 개성 표현!", fix_url("https://images.unsplash.com/photo-1593642634311-e4b3a7e3d3b0")),
+        "게자리": ("부드러운 색감과 여성스러운 실루엣 추천!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "사자자리": ("강렬한 레드와 골드로 자신감 있는 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "처녀자리": ("심플하고 깔끔한 라인으로 세련된 느낌!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "천칭자리": ("밸런스 잡힌 디자인으로 우아한 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "전갈자리": ("강렬한 블랙과 레드로 신비로운 매력!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "사수자리": ("자유로운 분위기의 캐주얼한 스타일!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "염소자리": ("클래식한 디자인으로 고급스러운 느낌!", fix_url("https://images.unsplash.com/photo-1604014230282-3e8e4e5b5b9d")),
+        "물병자리": ("독특한 디자인으로 개성 있는 스타일
+::contentReference[oaicite:0]{index=0}
+ 
