@@ -31,11 +31,12 @@ st.markdown(
         text-align: center;
     }
 
-/* 라벨 스타일: 혈액형 선택 + 생일 선택 동일 색상 */
-label, .stTextInput label, .stSelectbox label, .stDateInput label {
-    color: #D8BFFF !important;  /* 원하는 색상 지정 */
-    font-size: 20px !important;
+/* 혈액형 선택 + 생일 선택 라벨 색상 변경 */
+div[data-baseweb="select"] > label,
+div[data-baseweb="datepicker"] > label {
+    color: #D8BFFF !important;
     font-weight: bold;
+    font-size: 20px !important;
 }
     /* 버튼 스타일 */
 .stButton>button {
