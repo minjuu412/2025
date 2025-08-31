@@ -7,9 +7,15 @@ st.header("당신의 정보를 입력하세요")
 
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
-birth_date = st.date_input("생일을 선택하세요", datetime.date(2000, 1, 1))
 min_date = datetime.date(1900, 1, 1)
 max_date = datetime.date(2025, 12, 31)
+
+birth_date = st.date_input(
+    "생일을 선택하세요",
+    value=datetime.date(2000, 1, 1),  # 기본값
+    min_value=min_date,
+    max_value=max_date
+)
 
 # -------------------- 별자리 계산 --------------------
 def get_zodiac(month, day):
