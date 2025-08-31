@@ -23,21 +23,8 @@ THEME = """
   font-weight: bold;
   color: #ffdde1;
   text-shadow: 0 4px 16px rgba(0,0,0,0.6);
-  margin-top: 200px;  /* 화면 가운데 느낌 */
+  margin-top: 200px;  
   margin-bottom: 50px;
-}
-
-/* 입력창 글자 크기 */
-.css-2trqyj {  /* Streamlit selectbox 클래스 */
-  font-size: 20px !important;
-  color: #fff0f5 !important;
-  font-weight: bold;
-}
-
-.css-1avcm0n {  /* Streamlit date_input 클래스 */
-  font-size: 20px !important;
-  color: #fff0f5 !important;
-  font-weight: bold;
 }
 
 /* 스티커(랜덤 이모지) 스타일 */
@@ -66,30 +53,26 @@ THEME = """
 </style>
 """
 
-# ===============================
-# 앱 구조
-# ===============================
 st.markdown(THEME, unsafe_allow_html=True)
 
-# 제목 표시 (중앙, 여백 포함)
+# ===============================
+# 제목 표시
+# ===============================
 st.markdown('<h1 class="custom-title">🌙 오늘의 밤하늘 운세 ✨</h1>', unsafe_allow_html=True)
 
 # ===============================
 # 랜덤 스티커 생성
 # ===============================
 stickers = ["🌸", "🌙", "⭐", "🦄", "🐰", "🐱", "🌈", "💖", "🍓", "🪐", "🌷", "✨", "🎀", "🎉", "💫"]
-num_stickers = 15  # 생성할 스티커 개수
+num_stickers = 15
 
-# 랜덤 위치에 스티커 배치
 sticker_html = ""
 for _ in range(num_stickers):
     emoji = random.choice(stickers)
-    top = random.randint(0, 95)   # 화면 높이 비율
-    left = random.randint(0, 95)  # 화면 너비 비율
+    top = random.randint(0, 95)
+    left = random.randint(0, 95)
     sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%;">{emoji}</div>'
-
-st.markdown(sticker_html, unsafe_allow_html=True
-    )
+st.markdown(sticker_html, unsafe_allow_html=True)
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
 min_date = datetime.date(1900, 1, 1)
