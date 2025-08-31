@@ -37,6 +37,22 @@ st.markdown(
         font-size: 20px !important;
         font-weight: bold;
     }
+    /* 버튼 스타일 */
+.stButton>button {
+    background-color: #ff77aa !important;  /* 분홍색 배경 */
+    color: white !important;               /* 글자색 흰색 */
+    font-size: 20px !important;
+    font-weight: bold !important;
+    border-radius: 12px !important;
+    padding: 10px 25px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+    transition: 0.3s !important;
+}
+
+.stButton>button:hover {
+    background-color: #ff4499 !important;  /* 마우스 올렸을 때 색상 */
+    cursor: pointer !important;
+}
 
     /* 입력창 안 텍스트 */
     .stSelectbox div, .stDateInput input {
