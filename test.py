@@ -2,94 +2,97 @@ import streamlit as st
 import random
 import datetime
 
-# -------------------------------
-# 스타일 정의 (배경 + 제목 + 라벨 + 입력창 + 스티커)
-# -------------------------------
-st.markdown(
-    """
-    <style>
-    /* 배경: 어두운 밤하늘 분홍빛 그라데이션 */
-    .stApp {
-        background: linear-gradient(to bottom, #2e003e, #8e3e63, #ff6f91);
-        color: #ffffff;
-    }
+# ===============================
+# CSS 스타일
+# ===============================
+st.markdown("""
+<style>
+/* 배경: 분홍빛 밤하늘 그라데이션 */
+.stApp {
+    background: linear-gradient(to bottom, #2e003e, #8e3e63, #ff6f91);
+    color: #ffffff;
+    overflow: hidden;
+}
 
-    /* 제목을 화면 세로/가로 정중앙에 */
-    .title-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 50px; #화면 위쪽 여백
-        margin-bottom: 30px;
-        height: auto;   /* 화면 전체 높이 제거*/
-    }
+/* 제목 중앙 배치 + 예쁜 글자 */
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+}
+.custom-title {
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(45deg, #FFD1DC, #FFB6C1, #FF69B4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
 
-    .custom-title {
-        font-size: 50px;
-        font-weight: bold;
-        color: #ffb6c1;
-        text-align: center;
-    }
-
-/* 혈액형 선택 + 생일 선택 라벨 색상 변경 */
+/* 라벨 색상 */
 div[data-baseweb="select"] > label,
 div[data-baseweb="datepicker"] > label {
-    color: #D8BFFF !important;
+    color: #FFB6C1 !important;
     font-weight: bold;
     font-size: 20px !important;
 }
-    /* 버튼 스타일 */
-.stButton>button {
-    background-color: #ff77aa !important;  /* 분홍색 배경 */
-    color: white !important;               /* 글자색 흰색 */
-    font-size: 20px !important;
-    font-weight: bold !important;
-    border-radius: 12px !important;
-    padding: 10px 25px !important;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
-    transition: 0.3s !important;
+
+/* 입력창 글자 */
+div[data-baseweb="select"] > div > div > input,
+div[data-baseweb="datepicker"] > div > input {
+    color: #000000 !important;
+    font-size: 18px !important;
 }
 
-.stButton>button:hover {
-    background-color: #ff4499 !important;  /* 마우스 올렸을 때 색상 */
-    cursor: pointer !important;
+/* 랜덤 스티커 */
+.sticker {
+    position: fixed;
+    font-size: 35px;
+    animation: float 6s infinite;
+    opacity: 0.9;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-25px); }
+    100% { transform: translateY(0px); }
 }
 
-    /* 입력창 안 텍스트 */
-    .stSelectbox div, .stDateInput input {
-        font-size: 18px !important;
-        color: #000000 !important;
-    }
+/* 결과값 중앙 정렬 */
+.result-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+</style>
+""", unsafe_allow_html=True)
 
-    /* 랜덤 스티커 애니메이션 */
-    .sticker {
-        position: fixed;
-        font-size: 30px;
-        animation: float 6s infinite;
-        opacity: 0.9;
-    }
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-        100% { transform: translateY(0px); }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# ===============================
+# 제목 표시
+# ===============================
+st.markdown("""
+<div class="title-container">
+    <h1 class="custom-title">🌙 혈액형 & 별자리 특징 ✨🌸</h1>
+</div>
+""", unsafe_allow_html=True)
 
-# -------------------------------
-# 제목 표시 (가운데 정렬된 컨테이너 사용)
-# -------------------------------
-st.markdown(
-    """
-    <div class="title-container">
-        <h1 class="custom-title">혈액형 & 별자리 특징 앱</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+# ===============================
+# 랜덤 스티커 생성
+# ===============================
+stickers = ["🌸", "🌙", "⭐", "🦄", "🐰", "🐱", "🌈", "💖", "🍓", "✨", "🎀", "🎉", "💫", "🌼", "🍀"]
+num_stickers = 20
+sticker_html = ""
+for _ in range(num_stickers):
+    emoji = random.choice(stickers)
+    top = random.randint(0, 95)
+    left = random.randint(0, 95)
+    delay = random.uniform(0, 5)
+    sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%; animation-delay:{delay}s">{emoji}</div>'
+st.markdown(sticker_html, unsafe_allow_html=True)
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
 min_date = datetime.date(1900, 1, 1)
