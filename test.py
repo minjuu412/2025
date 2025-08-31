@@ -7,7 +7,7 @@ st.header("당신의 정보를 입력하세요")
 
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
-birth_date = st.date_input("생일을 선택하세요", datetime.date(2008, 4, 12))
+birth_date = st.date_input("생일을 선택하세요", datetime.date(2000, 1, 1))
 
 # -------------------- 별자리 계산 --------------------
 def get_zodiac(month, day):
