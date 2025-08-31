@@ -198,3 +198,39 @@ if st.button("결과 보기"):
             st.write(f"{match_blood}형 × {match_zodiac}자리")
     else:
         st.info("이 조합에 대한 추천은 준비 중이에요 😊")
+        THEME = """
+<style>
+.stApp {
+  /* 노을지는 주황-분홍 그라데이션 */
+  background: linear-gradient(180deg, #ff9a9e 0%, #fad0c4 50%, #ffecd2 100%);
+  color: #333333;
+  font-family: 'Comic Sans MS', 'Baloo 2', cursive;
+}
+
+/* 제목 스타일 */
+h1, .stMarkdown h1 {
+  text-align:center;
+  font-size:2.8rem !important;
+  color:#ff6f61 !important;  /* 선명한 주황/분홍 글씨 */
+  text-shadow:0 3px 14px rgba(0,0,0,.25);
+}
+
+/* 버튼 스타일 */
+div.stButton > button {
+  background: linear-gradient(135deg, #ffb4a2, #ff758f);
+  color:#ffffff;
+  font-weight:700;
+  border-radius:20px;
+  border:0;
+  padding:.6rem 1.2rem;
+  box-shadow:0 6px 18px rgba(255,117,143,.4);
+}
+div.stButton > button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* 입력 박스 및 카드 */
+.block-container { padding-top: 1rem; }
+.css-1vbkxwb, .stSelectbox, .stDateInput { filter: drop-shadow(0 5px 15px rgba(0,0,0,.1)); }
+
+</style>
+"""
+st.markdown(THEME, unsafe_allow_html=True)
