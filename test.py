@@ -20,7 +20,7 @@ THEME = """
     font-size: 3rem;
     color: #ffe6f2;
     text-shadow: 0 5px 18px rgba(0,0,0,0.6);
-    margin-top: 220px;   /* 제목 위 여백 */
+    margin-top: 400px;   /* 제목 위 여백 */
     margin-bottom: 60px; /* 제목 아래 여백 */
 }
 
