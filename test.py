@@ -2,35 +2,38 @@ import streamlit as st
 import datetime
 import random
 
-# ---------------- CSS 스타일 ----------------
-st.markdown("""
+# ===============================
+# CSS 스타일 정의
+# ===============================
+THEME = """
 <style>
+/* 배경: 분홍빛 밤하늘 */
 .stApp {
   background: linear-gradient(180deg, #1a0028 0%, #4b1d3f 50%, #a23c65 100%);
   color: #fff0f5;
-  font-family: 'Comic Sans MS', cursive;
-  overflow: hidden;
+  font-family: 'Comic Sans MS', 'Baloo 2', cursive;
   position: relative;
+  overflow: hidden;
 }
 
-/* 제목 중앙 배치, 예쁘게 꾸미기 */
+/* 제목 스타일 */
 .custom-title {
   text-align: center;
   font-size: 3rem;
   font-weight: bold;
-  color: #ffb6c1;
-  margin-top: 150px;
-  margin-bottom: 50px;
-  text-shadow: 2px 2px 12px rgba(0,0,0,0.7);
-  letter-spacing: 2px;
+  color: #ffdde1;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  margin-top: 50px;
+  margin-bottom: 40px;
+  z-index: 1;
 }
 
-/* 랜덤 스티커 */
+/* 스티커(랜덤 이모지) 스타일 */
 .sticker {
   position: absolute;
-  font-size: 2.5rem;
-  opacity: 0.9;
-  animation: float 8s infinite;
+  font-size: 2rem;
+  opacity: 0.8;
+  z-index: 0;
 }
 
 /* 버튼 스타일 */
@@ -44,30 +47,37 @@ st.markdown("""
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     transition: 0.3s;
 }
+
 .stButton>button:hover {
     background-color: #ff4499;
     cursor: pointer;
 }
 
-/* 스티커 부드럽게 떠다니기 */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
+/* 입력창 스타일 */
+.stSelectbox, .stDateInput {
+    z-index: 1;
 }
 </style>
-""", unsafe_allow_html=True)
+"""
 
-# ---------------- 제목 ----------------
-st.markdown('<h1 class="custom-title">💖 혈액형 & 별자리 특징 🌙</h1>', unsafe_allow_html=True)
+st.markdown(THEME, unsafe_allow_html=True)
 
-# ---------------- 랜덤 스티커 생성 ----------------
-stickers = ["🌸","🌙","⭐","🦄","🐰","🐱","🌈","💖","🍓","🪐","🌷","✨","🎀","🎉","💫"]
+# ===============================
+# 제목 표시
+# ===============================
+st.markdown('<h1 class="custom-title">💖 혈액형 & 별자리 특징 ✨</h1>', unsafe_allow_html=True)
+
+# ===============================
+# 랜덤 스티커 생성 (한 번만)
+# ===============================
+stickers = ["🌸", "🌙", "⭐", "🦄", "🐰", "🐱", "🌈", "💖", "🍓", "🪐", "🌷", "✨", "🎀", "🎉", "💫"]
+num_stickers = 15
+
 sticker_html = ""
-for _ in range(15):
-    top = random.randint(0,95)
-    left = random.randint(0,95)
+for _ in range(num_stickers):
     emoji = random.choice(stickers)
+    top = random.randint(0, 90)
+    left = random.randint(0, 90)
     sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%;">{emoji}</div>'
 st.markdown(sticker_html, unsafe_allow_html=True)
 # -------------------- 사용자 입력 --------------------
