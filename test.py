@@ -2,76 +2,74 @@ import streamlit as st
 import random
 import datetime
 
-# ===============================
-# 🎨 스타일 (배경 + 제목 + 스티커)
-# ===============================
-st.markdown("""
-<style>
-/* 배경: 어두운 밤하늘 + 분홍빛 */
-.stApp {
-    background: linear-gradient(180deg, #1a0028 0%, #4b1d3f 50%, #a23c65 100%);
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
+# -------------------------------
+# 스타일 정의 (배경 + 제목 + 라벨 + 입력창 + 스티커)
+# -------------------------------
+st.markdown(
+    """
+    <style>
+    /* 배경: 어두운 밤하늘 분홍빛 그라데이션 */
+    .stApp {
+        background: linear-gradient(to bottom, #2e003e, #8e3e63, #ff6f91);
+        color: #ffffff;
+    }
 
-/* 제목 중앙 + 아래로 내리기 */
-.title {
-    text-align: center;
-    font-size: 60px;
-    font-weight: bold;
-    color: #ffd1dc;
-    margin-top: 200px; /* 위 여백 */
-    margin-bottom: 20px;
-    text-shadow: 0 4px 8px rgba(0,0,0,0.5);
-}
+    /* 제목을 화면 세로/가로 정중앙에 */
+    .title-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;   /* 화면 전체 높이 */
+    }
 
-/* 입력 글씨 크게 */
-label {
-    font-size: 22px !important;
-    color: #fff0f5 !important;
-}
+    .custom-title {
+        font-size: 50px;
+        font-weight: bold;
+        color: #ffb6c1;
+        text-align: center;
+    }
 
-/* 입력창 글자 크기 */
-input, select {
-    font-size: 20px !important;
-}
+    /* 라벨 스타일 */
+    label, .stTextInput label, .stSelectbox label, .stDateInput label {
+        color: #ffb6c1 !important;
+        font-size: 20px !important;
+        font-weight: bold;
+    }
 
-/* 스티커 스타일 (랜덤 떠다니는 이모티콘) */
-.sticker {
-    position: absolute;
-    font-size: 2.5rem;
-    opacity: 0.9;
-    animation: float 10s linear infinite;
-}
+    /* 입력창 안 텍스트 */
+    .stSelectbox div, .stDateInput input {
+        font-size: 18px !important;
+        color: #000000 !important;
+    }
 
-@keyframes float {
-    0% { transform: translateY(0px);}
-    50% { transform: translateY(-30px);}
-    100% { transform: translateY(0px);}
-}
-</style>
-""", unsafe_allow_html=True)
+    /* 랜덤 스티커 애니메이션 */
+    .sticker {
+        position: fixed;
+        font-size: 30px;
+        animation: float 6s infinite;
+        opacity: 0.9;
+    }
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+        100% { transform: translateY(0px); }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# ===============================
-# 제목 표시
-# ===============================
-st.markdown("<div class='title'>✨ 나의 혈액형 & 별자리 ✨</div>", unsafe_allow_html=True)
-
-# ===============================
-# 랜덤 떠다니는 이모티콘
-# ===============================
-stickers = ["✨", "🌙", "🔮", "🌌", "💫", "🌟", "🌸", "🦋", "🌷", "🌈", "🎀", "💖"]
-num_stickers = 15
-
-sticker_html = ""
-for _ in range(num_stickers):
-    emoji = random.choice(stickers)
-    top = random.randint(5, 90)  # 화면 높이 %
-    left = random.randint(5, 90) # 화면 너비 %
-    sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%;">{emoji}</div>'
-
-st.markdown(sticker_html, unsafe_allow_html=True)
+# -------------------------------
+# 제목 표시 (가운데 정렬된 컨테이너 사용)
+# -------------------------------
+st.markdown(
+    """
+    <div class="title-container">
+        <h1 class="custom-title">혈액형 & 별자리 특징 앱</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
