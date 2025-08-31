@@ -41,6 +41,14 @@ st.title("🔮 혈액형 & 별자리 특징 확인 앱")
 
 st.header("당신의 정보를 입력하세요")
 
+h1, .stMarkdown h1 {
+  text-align: center;
+  font-size: 2.8rem !important;
+  color: #ff6f61 !important;
+  text-shadow: 0 3px 14px rgba(0,0,0,.25);
+  margin-top: 100px;  /* 여기서 위쪽 여백을 크게 줌 */
+}
+
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
 min_date = datetime.date(1900, 1, 1)
