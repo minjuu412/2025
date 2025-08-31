@@ -33,7 +33,7 @@ st.markdown(
 
     /* 라벨 스타일 */
     label, .stTextInput label, .stSelectbox label, .stDateInput label {
-        color: #ffb6c1 !important;
+        color: #d8bfff !important;
         font-size: 20px !important;
         font-weight: bold;
     }
