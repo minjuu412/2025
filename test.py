@@ -36,11 +36,6 @@ div.stButton > button:hover { filter: brightness(1.05); transform: translateY(-1
 
 </style>
 """
-st.markdown(THEME, unsafe_allow_html=True)
-st.title("🔮 혈액형 & 별자리 특징 확인 앱")
-
-st.header("당신의 정보를 입력하세요")
-
 h1, .stMarkdown h1 {
   text-align: center;
   font-size: 2.8rem !important;
@@ -48,6 +43,10 @@ h1, .stMarkdown h1 {
   text-shadow: 0 3px 14px rgba(0,0,0,.25);
   margin-top: 100px;  /* 여기서 위쪽 여백을 크게 줌 */
 }
+st.markdown(THEME, unsafe_allow_html=True)
+st.title("🔮 혈액형 & 별자리 특징 확인 앱")
+
+st.header("당신의 정보를 입력하세요")
 
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
