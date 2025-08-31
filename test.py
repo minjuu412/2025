@@ -37,6 +37,12 @@ st.markdown(
         font-size: 20px !important;
         font-weight: bold;
     }
+    /* 혈액형 선택창 라벨 색상 */
+.stSelectbox label[for] {
+    color: #ff69b4 !important;  /* 핑크색으로 변경 */
+    font-size: 20px !important;
+    font-weight: bold;
+}
     /* 버튼 스타일 */
 .stButton>button {
     background-color: #ff77aa !important;  /* 분홍색 배경 */
