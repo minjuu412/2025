@@ -1,68 +1,41 @@
 import streamlit as st
 import datetime
-
 import random
 
-# ===============================
-# CSS 스타일 정의
-# ===============================
-THEME = """
-<style>
-/* 배경: 어두운 밤하늘 + 분홍빛 */
-.stApp {
-  background: linear-gradient(180deg, #1a0028 0%, #4b1d3f 50%, #a23c65 100%);
-  color: #fff0f5;
-  font-family: 'Comic Sans MS', 'Baloo 2', cursive;
-  position: relative;
-  overflow: hidden;
-}
+# -------------------- 스타일 --------------------
+st.markdown("""
+    <style>
+        .stApp {
+            background: linear-gradient(to bottom, #1a002b, #330033, #660044);
+            color: white;
+            text-align: center;
+            position: relative;
+            min-height: 100vh;
+        }
+        .custom-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffd1e8;
+            margin-top: 180px;  /* 제목 위 여백 크게 */
+        }
+        .sticker {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.9;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-/* 제목 스타일 */
-.custom-title {
-  text-align: center;
-  font-size: 3.2rem;
-  font-weight: bold;
-  color: #ffdde1;
-  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
-  margin-top: 200px;  /* 위쪽 여백 크게 */
-  margin-bottom: 50px;
-}
+# -------------------- 랜덤 스티커 --------------------
+stickers = ["🌙", "⭐", "🌸", "🌈", "🦄", "🐰", "💖", "🍓", "🦋", "🎀"]
+for _ in range(10):
+    st.markdown(
+        f'<div class="sticker" style="top:{random.randint(5,90)}%; left:{random.randint(5,90)}%;">{random.choice(stickers)}</div>',
+        unsafe_allow_html=True
+    )
 
-/* 스티커(랜덤 이모지) 스타일 */
-.sticker {
-  position: absolute;
-  font-size: 2.5rem;
-  opacity: 0.9;
-}
-</style>
-"""
-
-# ===============================
-# 앱 구조
-# ===============================
-st.markdown(THEME, unsafe_allow_html=True)
-
-# 제목 표시 (여백 포함)
-st.markdown('<h1 class="custom-title">🌙 오늘의 밤하늘 운세 ✨</h1>', unsafe_allow_html=True)
-
-# ===============================
-# 랜덤 스티커 생성
-# ===============================
-stickers = ["🌸", "🌙", "⭐", "🦄", "🐰", "🐱", "🌈", "💖", "🍓", "🪐", "🌷", "✨"]
-num_stickers = 12  # 생성할 스티커 개수
-
-# 랜덤 위치에 스티커 배치
-sticker_html = ""
-for _ in range(num_stickers):
-    emoji = random.choice(stickers)
-    top = random.randint(10, 90)   # 화면 높이 비율
-    left = random.randint(5, 90)   # 화면 너비 비율
-    sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%;">{emoji}</div>'
-
-st.markdown(sticker_html, unsafe_allow_html=True)
-
-st.title("🔮 혈액형 & 별자리 특징 확인 앱")
-
+# -------------------- 제목 --------------------
+st.markdown('<h1 class="custom-title">🔮 혈액형 & 별자리 특징 확인 앱</h1>', unsafe_allow_html=True)
 st.header("당신의 정보를 입력하세요")
 
 # -------------------- 사용자 입력 --------------------
