@@ -1,246 +1,127 @@
 import streamlit as st
-from datetime import datetime
-import random
+import datetime
 
-# ===================== 디자인 (CSS) =====================
-THEME = """
-<style>
-.stApp {
-  background: linear-gradient(180deg, #0b1020 0%, #1a2240 60%, #233a66 100%);
-  color: #fffaf0;
-  font-family: 'Comic Sans MS', 'Baloo 2', cursive;
-}
-.stApp::before{
-  content:""; position:fixed; inset:0;
-  background-image:url("https://cdn.pixabay.com/photo/2017/08/30/01/05/stars-2695569_1280.png");
-  background-size:cover; opacity:.22; z-index:-1;
-}
-h1 { text-align:center; font-size:2.6rem !important; color:#ffdd93 !important;
-     text-shadow:0 3px 10px rgba(0,0,0,.6);}
-label, .stMarkdown p, .stMarkdown span { color:#ffeedd !important; font-weight:600; }
-div.stButton > button {
-  background: linear-gradient(135deg, #ffc6ff, #ffadad);
-  color:#442244; font-weight:700; border-radius:20px; border:2px solid #fffaf5;
-  padding:.6rem 1.3rem; box-shadow:0 5px 15px rgba(255,182,193,.4);
-}
-div.stButton > button:hover { filter: brightness(1.08); transform:translateY(-2px) scale(1.03);}
-[data-testid="stNotification"], [data-testid="stVerticalBlock"] > div:has(> .stAlert){
-  border-radius:20px; background:rgba(255,248,250,.15) !important;
-  backdrop-filter: blur(12px); color:#fffaf0 !important; border:1.5px dashed #ffd6f6;
-}
-img { border-radius:20px !important; box-shadow:0 8px 24px rgba(0,0,0,.4);}
-</style>
-"""
-st.markdown(THEME, unsafe_allow_html=True)
+st.title("🔮 혈액형 & 별자리 특징 확인 앱")
 
-# ===================== 스티커 랜덤 =====================
-STICKERS = [
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43b.png",  
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f431.png",  
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f430.png",  
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f319.png",  
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2b50.png",  
-]
-for _ in range(5):
-    url = random.choice(STICKERS)
-    left = random.randint(3, 85); top  = random.randint(72, 92); size = random.randint(64, 96)
-    st.markdown(f"""<img src="{url}" style="position:fixed; left:{left}%; top:{top}%;
-                width:{size}px; z-index:12; opacity:.95;">""", unsafe_allow_html=True)
+st.header("당신의 정보를 입력하세요")
 
-# streamlit run app.py
-import streamlit as st
-from datetime import datetime
-import random
+# 사용자 입력
+blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
+birth_date = st.date_input("생일을 선택하세요", datetime.date(2008, 4, 12))
 
-# ===================== 🌙 Dreamy Night-Sky THEME (CSS) =====================
-THEME = """
-<style>
-/* App background: dreamy night gradient */
-.stApp {
-  background: linear-gradient(180deg, #0b1020 0%, #14213d 50%, #233a66 100%);
-  color: #f8f9fa;
-  font-family: 'Comic Sans MS', 'Baloo 2', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+# 별자리 계산 함수
+def get_zodiac(month, day):
+    if (month == 3 and day >= 21) or (month == 4 and day <= 19):
+        return "양자리"
+    elif (month == 4 and day >= 20) or (month == 5 and day <= 20):
+        return "황소자리"
+    elif (month == 5 and day >= 21) or (month == 6 and day <= 21):
+        return "쌍둥이자리"
+    elif (month == 6 and day >= 22) or (month == 7 and day <= 22):
+        return "게자리"
+    elif (month == 7 and day >= 23) or (month == 8 and day <= 22):
+        return "사자자리"
+    elif (month == 8 and day >= 23) or (month == 9 and day <= 23):
+        return "처녀자리"
+    elif (month == 9 and day >= 24) or (month == 10 and day <= 22):
+        return "천칭자리"
+    elif (month == 10 and day >= 23) or (month == 11 and day <= 22):
+        return "전갈자리"
+    elif (month == 11 and day >= 23) or (month == 12 and day <= 21):
+        return "사수자리"
+    elif (month == 12 and day >= 22) or (month == 1 and day <= 19):
+        return "염소자리"
+    elif (month == 1 and day >= 20) or (month == 2 and day <= 18):
+        return "물병자리"
+    elif (month == 2 and day >= 19) or (month == 3 and day <= 20):
+        return "물고기자리"
+
+# 혈액형 특징
+blood_traits = {
+    "A": "신중하고 꼼꼼하며 책임감이 강해요.",
+    "B": "창의적이고 자유분방하며 개성이 뚜렷해요.",
+    "O": "사교적이고 리더십이 있으며 에너지가 넘쳐요.",
+    "AB": "이성적이면서도 감성적인 독특한 매력이 있어요."
 }
 
-/* Tiny stars overlay */
-.stApp::before{
-  content:"";
-  position:fixed; inset:0;
-  background-image:url("https://cdn.pixabay.com/photo/2017/08/30/01/05/stars-2695569_1280.png");
-  background-size:cover;
-  opacity:.18;
-  pointer-events:none;
-  z-index:-1;
+# 별자리 특징
+zodiac_traits = {
+    "양자리": "도전 정신이 강하고 열정적이에요.",
+    "황소자리": "끈기 있고 안정적인 성향이에요.",
+    "쌍둥이자리": "호기심이 많고 다재다능해요.",
+    "게자리": "가족과 친구를 소중히 여기며 따뜻해요.",
+    "사자자리": "자신감이 넘치고 카리스마가 있어요.",
+    "처녀자리": "분석적이고 섬세하며 현실적이에요.",
+    "천칭자리": "조화를 중요시하고 매력적인 성격이에요.",
+    "전갈자리": "열정적이고 직관력이 뛰어나요.",
+    "사수자리": "자유롭고 낙천적인 성향이에요.",
+    "염소자리": "성실하고 목표 지향적이에요.",
+    "물병자리": "독창적이고 진보적인 사고를 해요.",
+    "물고기자리": "감수성이 풍부하고 상상력이 뛰어나요."
 }
 
-/* Title */
-h1, .stMarkdown h1 {
-  text-align:center;
-  font-size:2.8rem !important;
-  color:#ffe066 !important;
-  text-shadow:0 3px 14px rgba(0,0,0,.45);
-  margin-top:.5rem;
+# 혈액형 + 별자리 조합 해석 (48가지)
+combo_traits = {
+    ("A", "양자리"): "신중함과 추진력이 조화를 이루어 계획적인 리더가 돼요.",
+    ("A", "황소자리"): "끈기와 책임감이 강해 꾸준히 성과를 내는 타입이에요.",
+    ("A", "쌍둥이자리"): "분석적이면서도 다재다능해, 공부나 연구에 강점이 있어요.",
+    ("A", "게자리"): "섬세하고 배려심이 깊어 신뢰받는 친구가 돼요.",
+    ("A", "사자자리"): "조직적 사고와 자신감을 겸비해 지도자로 성장할 수 있어요.",
+    ("A", "처녀자리"): "세부사항에 강하고 꼼꼼해 완벽주의적 성향을 보여요.",
+    ("A", "천칭자리"): "균형 잡힌 사고와 책임감으로 중재자의 역할을 잘해요.",
+    ("A", "전갈자리"): "깊은 집중력과 성실함으로 어려운 문제도 해결해요.",
+    ("A", "사수자리"): "도전정신에 신중함이 더해져 안정적인 모험을 즐겨요.",
+    ("A", "염소자리"): "책임감과 목표 지향성이 강해 꾸준히 성공을 추구해요.",
+    ("A", "물병자리"): "체계적인 사고로 새로운 아이디어를 현실화할 수 있어요.",
+    ("A", "물고기자리"): "섬세한 감성과 성실함이 조화를 이루어 따뜻한 리더가 돼요.",
+
+    ("B", "양자리"): "호기심과 추진력이 만나 도전을 즐기고 모험심이 강해요.",
+    ("B", "황소자리"): "자유로움과 끈기가 조화를 이루어 독창적인 결과를 내요.",
+    ("B", "쌍둥이자리"): "창의적이고 다재다능하며 대인관계에서 빛을 발해요.",
+    ("B", "게자리"): "자유분방하면서도 주변 사람을 잘 돌보는 따뜻한 성격이에요.",
+    ("B", "사자자리"): "자유로운 사고와 자신감이 만나 매력적인 리더가 돼요.",
+    ("B", "처녀자리"): "섬세함 속에 개성이 살아있어 독창적인 완벽주의자예요.",
+    ("B", "천칭자리"): "사교성과 개성이 조화를 이루어 인기가 많아요.",
+    ("B", "전갈자리"): "자유로운 상상력과 강렬한 열정이 공존해요.",
+    ("B", "사수자리"): "낙천적이고 창의적이라 새로운 도전을 즐겨요.",
+    ("B", "염소자리"): "개성과 현실감각이 어우러져 실용적인 창의성을 발휘해요.",
+    ("B", "물병자리"): "혁신적인 아이디어와 자유로운 사고를 가진 독창적 인물이에요.",
+    ("B", "물고기자리"): "감수성과 상상력이 풍부해 예술적인 재능이 뛰어나요.",
+
+    ("O", "양자리"): "리더십과 열정이 결합해 강력한 추진력을 보여요.",
+    ("O", "황소자리"): "끈기와 사교성이 만나 신뢰받는 동료가 돼요.",
+    ("O", "쌍둥이자리"): "다재다능하고 활발해 어디서든 분위기를 살려요.",
+    ("O", "게자리"): "따뜻한 리더십으로 주변 사람을 잘 챙겨요.",
+    ("O", "사자자리"): "자신감과 카리스마가 넘쳐 모두를 이끄는 스타일이에요.",
+    ("O", "처녀자리"): "리더십 속에서도 꼼꼼함이 돋보이는 균형 잡힌 인물이에요.",
+    ("O", "천칭자리"): "사교성과 리더십이 어우러져 중재자 역할을 잘해요.",
+    ("O", "전갈자리"): "강한 직관력과 추진력이 만나 영향력이 커요.",
+    ("O", "사수자리"): "낙천적인 리더로서 새로운 도전을 즐겨요.",
+    ("O", "염소자리"): "책임감 있는 리더십으로 신뢰받는 인물이 돼요.",
+    ("O", "물병자리"): "진보적인 리더십으로 혁신을 이끄는 역할을 해요.",
+    ("O", "물고기자리"): "따뜻한 감성과 리더십이 만나 모두에게 존경받아요.",
+
+    ("AB", "양자리"): "이성과 열정이 조화를 이루어 독창적인 리더십을 발휘해요.",
+    ("AB", "황소자리"): "차분한 성격 속에 독창성이 숨어 있어 신뢰받는 조언자가 돼요.",
+    ("AB", "쌍둥이자리"): "이성적 판단과 자유로운 사고가 어우러져 다재다능해요.",
+    ("AB", "게자리"): "감성과 이성이 균형을 이루어 따뜻하면서도 냉철해요.",
+    ("AB", "사자자리"): "자신감과 독창적인 사고로 특별한 매력을 발휘해요.",
+    ("AB", "처녀자리"): "분석적이고 이성적인 성격이 돋보이는 완벽주의자예요.",
+    ("AB", "천칭자리"): "균형 감각과 독창성이 어우러져 매력적인 인물이 돼요.",
+    ("AB", "전갈자리"): "깊은 통찰력과 강한 직관력이 돋보이는 타입이에요.",
+    ("AB", "사수자리"): "이성과 낙천성이 조화를 이루어 자유로운 탐험가예요.",
+    ("AB", "염소자리"): "책임감과 독창적인 사고가 어우러져 실용적인 성향이에요.",
+    ("AB", "물병자리"): "혁신성과 이성적 판단력이 결합해 독보적인 개성을 보여요.",
+    ("AB", "물고기자리"): "감성과 이성이 조화를 이루어 예술적이면서도 논리적이에요."
 }
 
-/* Inputs card feel */
-.block-container { padding-top: 1.2rem; }
-.css-1vbkxwb, .stSelectbox, .stDateInput { filter: drop-shadow(0 6px 16px rgba(0,0,0,.15)); }
+# 결과 출력
+if st.button("결과 보기"):
+    month, day = birth_date.month, birth_date.day
+    zodiac_sign = get_zodiac(month, day)
 
-/* Labels */
-label, .stMarkdown p { color:#f1f3f5 !important; }
+    st.subheader("✨ 결과 ✨")
+    st.write(f"🩸 혈액형({blood_type}) 특징: {blood_traits[blood_type]}")
+    st.write(f"🌌 별자리({zodiac_sign}) 특징: {zodiac_traits[zodiac_sign]}")
 
-/* Button (primary) */
-div.stButton > button {
-  background: linear-gradient(135deg, #ffb4a2, #ffa69e);
-  color: #1b1b1b;
-  font-weight: 700;
-  border-radius: 18px;
-  border: 0;
-  padding: .6rem 1.1rem;
-  box-shadow: 0 6px 18px rgba(255,166,158,.35);
-}
-div.stButton > button:hover { filter: brightness(1.05); transform: translateY(-1px); }
-
-/* Result cards (glassmorphism) */
-[data-testid="stNotification"], [data-testid="stVerticalBlock"] > div:has(> .stAlert){
-  border-radius: 18px !important;
-  background: rgba(255,255,255,.08) !important;
-  backdrop-filter: blur(8px);
-}
-
-/* Image soft shadow + rounded */
-img { border-radius: 18px !important; box-shadow: 0 8px 28px rgba(0,0,0,.35); }
-</style>
-"""
-st.markdown(THEME, unsafe_allow_html=True)
-
-# =============== Cute Sticker Sprinkles (Twemoji PNG, no hotlink issues) ===============
-STICKERS = [
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43b.png",  # bear face
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f431.png",  # cat face
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2b50.png",  # star
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f319.png",  # crescent moon
-    "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f430.png",  # rabbit face
-]
-for _ in range(4):  # show 4 random stickers near the bottom like stickers
-    url = random.choice(STICKERS)
-    left = random.randint(2, 85)    # %
-    top  = random.randint(70, 92)   # %
-    size = random.randint(60, 96)   # px
-    st.markdown(
-        f"""<img src="{url}" style="
-            position:fixed; left:{left}%; top:{top}%;
-            width:{size}px; z-index:12; opacity:.92;">""",
-        unsafe_allow_html=True
-    )
-
-# ===================== Zodiac ranges =====================
-zodiac_dates = {
-    "양자리": ((3, 21), (4, 19)),
-    "황소자리": ((4, 20), (5, 20)),
-    "쌍둥이자리": ((5, 21), (6, 20)),
-    "게자리": ((6, 21), (7, 22)),
-    "사자자리": ((7, 23), (8, 22)),
-    "처녀자리": ((8, 23), (9, 22)),
-    "천칭자리": ((9, 23), (10, 22)),
-    "전갈자리": ((10, 23), (11, 21)),
-    "사수자리": ((11, 22), (12, 21)),
-    "염소자리": ((12, 22), (1, 19)),
-    "물병자리": ((1, 20), (2, 18)),
-    "물고기자리": ((2, 19), (3, 20)),
-}
-
-def get_zodiac(month: int, day: int) -> str | None:
-    for zodiac, ((sm, sd), (em, ed)) in zodiac_dates.items():
-        if (month == sm and day >= sd) or (month == em and day <= ed) \
-           or (sm < month < em) \
-           or (sm > em and (month > sm or month < em)):
-            return zodiac
-    return None
-
-# Ensure Unsplash image URLs always render (thumb params)
-def fix_url(url: str) -> str:
-    joiner = "&" if "?" in url else "?"
-    return f"{url}{joiner}auto=format&fit=crop&w=900&q=80"
-
-# ===================== 48 combos: blood type × zodiac → (message, image) =====================
-style_recommendations = {
-    "A": {
-        "양자리": ("활동적이면서 스포티한 스타일 추천!", fix_url("https://images.unsplash.com/photo-1519741497674-611481863552")),
-        "황소자리": ("편안한 캐주얼로 안정감 있는 느낌!", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "쌍둥이자리": ("트렌디한 아이템으로 변화를 줘보세요.", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "게자리": ("따뜻한 색감의 포근한 스타일!", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-        "사자자리": ("화려한 액세서리로 포인트!", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "처녀자리": ("깔끔하고 미니멀한 스타일 추천.", fix_url("https://images.unsplash.com/photo-1555685812-4b943f1cb0eb")),
-        "천칭자리": ("밸런스 좋은 세련된 스타일!", fix_url("https://images.unsplash.com/photo-1512436991641-6745cdb1723f")),
-        "전갈자리": ("강렬한 컬러로 개성 표현!", fix_url("https://images.unsplash.com/photo-1514995669114-6081e934b693")),
-        "사수자리": ("자유로운 분위기의 캐주얼 추천.", fix_url("https://images.unsplash.com/photo-1503342217505-b0a15ec3261c")),
-        "염소자리": ("클래식하고 단정한 스타일!", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "물병자리": ("독특하고 실험적인 패션 시도!", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "물고기자리": ("로맨틱하고 부드러운 스타일.", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-    },
-    "B": {
-        "양자리": ("스포티하면서 밝은 컬러 추천!", fix_url("https://images.unsplash.com/photo-1503342217505-b0a15ec3261c")),
-        "황소자리": ("자연스러운 톤으로 편안하게.", fix_url("https://images.unsplash.com/photo-1555685812-4b943f1cb0eb")),
-        "쌍둥이자리": ("톡톡 튀는 포인트 아이템 필수!", fix_url("https://images.unsplash.com/photo-1512436991641-6745cdb1723f")),
-        "게자리": ("포근하고 따뜻한 느낌 추천.", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "사자자리": ("눈에 띄는 화려한 스타일 OK!", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "처녀자리": ("깔끔하게 정돈된 스타일 추천.", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "천칭자리": ("조화로운 패션으로 균형 유지!", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-        "전갈자리": ("미스터리한 느낌의 컬러 추천.", fix_url("https://images.unsplash.com/photo-1514995669114-6081e934b693")),
-        "사수자리": ("자유로운 무드의 캐주얼 스타일.", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "염소자리": ("단정하고 클래식한 아이템 추천.", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "물병자리": ("독특함을 살린 실험적 패션.", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "물고기자리": ("부드럽고 몽환적인 스타일 추천.", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-    },
-    "AB": {
-        "양자리": ("개성과 자유분방함이 돋보이는 스타일!", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "황소자리": ("안정적인 톤의 클래식 패션.", fix_url("https://images.unsplash.com/photo-1555685812-4b943f1cb0eb")),
-        "쌍둥이자리": ("다양한 패턴을 믹스 매치해보세요.", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "게자리": ("따뜻하고 감성적인 스타일 추천.", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "사자자리": ("자신감 있는 강렬한 룩!", fix_url("https://images.unsplash.com/photo-1503342217505-b0a15ec3261c")),
-        "처녀자리": ("깔끔하고 정돈된 느낌의 패션.", fix_url("https://images.unsplash.com/photo-1512436991641-6745cdb1723f")),
-        "천칭자리": ("세련된 컬러 매치 추천!", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-        "전갈자리": ("시크하면서도 강렬한 스타일!", fix_url("https://images.unsplash.com/photo-1514995669114-6081e934b693")),
-        "사수자리": ("자유로운 감성의 보헤미안 룩.", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "염소자리": ("단정하고 품격 있는 패션.", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "물병자리": ("실험적이고 창의적인 패션 추천!", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "물고기자리": ("몽환적이고 부드러운 분위기의 스타일.", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-    },
-    "O": {
-        "양자리": ("활발하고 캐주얼한 스타일!", fix_url("https://images.unsplash.com/photo-1519741497674-611481863552")),
-        "황소자리": ("편안하면서도 안정적인 룩.", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "쌍둥이자리": ("다채로운 액세서리로 포인트!", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "게자리": ("따뜻한 무드의 감성적인 패션.", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-        "사자자리": ("강렬하고 화려한 스타일!", fix_url("https://images.unsplash.com/photo-1520975918311-6c2c1c4c9b89")),
-        "처녀자리": ("깔끔한 모던 스타일 추천.", fix_url("https://images.unsplash.com/photo-1555685812-4b943f1cb0eb")),
-        "천칭자리": ("밸런스 있는 세련된 느낌!", fix_url("https://images.unsplash.com/photo-1512436991641-6745cdb1723f")),
-        "전갈자리": ("카리스마 있는 다크 스타일!", fix_url("https://images.unsplash.com/photo-1514995669114-6081e934b693")),
-        "사수자리": ("자유로운 캐주얼 스타일.", fix_url("https://images.unsplash.com/photo-1503342217505-b0a15ec3261c")),
-        "염소자리": ("전통적이고 고급스러운 스타일.", fix_url("https://images.unsplash.com/photo-1521335629791-ce4aec67dd53")),
-        "물병자리": ("독창적이고 개성 강한 스타일.", fix_url("https://images.unsplash.com/photo-1542060748-10c28b62716c")),
-        "물고기자리": ("로맨틱하고 부드러운 스타일 추천.", fix_url("https://images.unsplash.com/photo-1539008835657-9e67d1fc8e2f")),
-    },
-}
-
-# ===================== UI =====================
-st.title("✨ 오늘의 외출 스타일 추천 ✨")
-
-blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "AB", "O"])
-
-min_date = datetime(2000, 1, 1)
-max_date = datetime(2025, 12, 31)
-birthday = st.date_input("생일을 선택하세요", value=datetime.today(), min_value=min_date, max_value=max_date)
-
-month = birthday.month
-day = birthday.day
-zodiac = get_zodiac(month, day)
-
-if st.button("스타일 추천 받기"):
-    if zodiac and blood_type in style_recommendations and zodiac in style_recommendations[blood_type]:
-        msg, img = style_recommendations[blood_type][zodiac]
-        st.success(f"당신의 별자리는 **{zodiac}** 입니다! 🎯")
-        st.info(f"오늘의 외출 스타일 추천: {msg}")
-        st.image(img, caption=f"{blood_type}형 {zodiac} 스타일", use_column_width=True)
-    else:
-        st.error("추천 데이터를 찾을 수 없습니다. 입력을 확인해주세요.")
+    st.write(f"🔮 조합 해석: {combo_traits[(blood_type, zodiac_sign)]}")
