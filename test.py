@@ -19,7 +19,9 @@ st.markdown(
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;   /* 화면 전체 높이 */
+        margin-top: 50px; #화면 위쪽 여백
+        margin-bottom: 30px;
+        height: auto;   /* 화면 전체 높이 제거*/
     }
 
     .custom-title {
