@@ -68,6 +68,30 @@ div[data-baseweb="select"] > div > div > input {
     text-align: center;
     margin-top: 20px;
 }
+# ===============================
+# 결과 출력
+# ===============================
+if st.button("결과 보기"):
+    month, day = birth_date.month, birth_date.day
+    zodiac_sign = get_zodiac(month, day)
+    
+    # 결과값을 중앙 정렬된 div 안에 출력
+    st.markdown('<div class="result-container">', unsafe_allow_html=True)
+    st.subheader("✨ 결과 ✨")
+    st.write(f"🩸 혈액형({blood_type}) 특징: {blood_traits[blood_type]}")
+    st.write(f"🌌 별자리({zodiac_sign}) 특징: {zodiac_traits[zodiac_sign]}")
+    st.write(f"🔮 조합 해석: {combo_traits[(blood_type, zodiac_sign)]}")
+    
+    # 잘 맞는 조합 추천
+    if (blood_type, zodiac_sign) in good_combos:
+        st.subheader("💖 잘 맞는 혈액형 × 별자리 조합 추천")
+        matches = good_combos[(blood_type, zodiac_sign)]
+        for match_blood, match_zodiac in matches:
+            st.write(f"{match_blood}형 × {match_zodiac}자리")
+    else:
+        st.info("이 조합에 대한 추천은 준비 중이에요 😊")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 </style>
 """, unsafe_allow_html=True)
 
