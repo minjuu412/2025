@@ -31,15 +31,9 @@ st.markdown(
         text-align: center;
     }
 
-    /* 라벨 스타일 */
-    label, .stTextInput label, .stSelectbox label, .stDateInput label {
-        color: #d8bfff !important;
-        font-size: 20px !important;
-        font-weight: bold;
-    }
-    /* 혈액형 선택창 라벨 색상 */
-.stSelectbox label[for] {
-    color: #ff69b4 !important;  /* 핑크색으로 변경 */
+/* 라벨 스타일: 혈액형 선택 + 생일 선택 동일 색상 */
+label, .stTextInput label, .stSelectbox label, .stDateInput label {
+    color: #D8BFFF !important;  /* 원하는 색상 지정 */
     font-size: 20px !important;
     font-weight: bold;
 }
