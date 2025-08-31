@@ -34,7 +34,7 @@ st.markdown("""
 /* 라벨 색상 */
 div[data-baseweb="select"] > label,
 div[data-baseweb="datepicker"] > label {
-    color: #FFB6C1 !important;
+    color: #D8BFFF !important;
     font-weight: bold;
     font-size: 20px !important;
 }
