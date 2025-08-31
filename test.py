@@ -76,7 +76,7 @@ div[data-baseweb="select"] > div > div > input {
 # ===============================
 st.markdown("""
 <div class="title-container">
-    <h1 class="custom-title">🌙 혈액형 & 별자리 특징 ✨🌸</h1>
+    <h1 class="custom-title">🌙 혈액형 & 별자리 특징 ✨</h1>
 </div>
 """, unsafe_allow_html=True)
 
