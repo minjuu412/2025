@@ -1,62 +1,94 @@
 import streamlit as st
-import random
 import datetime
+import random
 
-# -------------------------------
-# 🎨 스타일 (배경 + 글씨 + 제목 위치)
-# -------------------------------
-st.markdown(
-    """
-    <style>
-        /* 배경: 어두운 밤하늘 분홍빛 그라데이션 */
-        .stApp {
-            background: linear-gradient(180deg, #2e003e, #3b0a45, #5c1a72, #8a2c7c);
-            color: white;
-        }
+# ===============================
+# CSS 스타일 정의
+# ===============================
+THEME = """
+<style>
+/* 배경: 어두운 밤하늘 + 분홍빛 */
+.stApp {
+  background: linear-gradient(180deg, #1a0028 0%, #4b1d3f 50%, #a23c65 100%);
+  color: #fff0f5;
+  font-family: 'Comic Sans MS', 'Baloo 2', cursive;
+  position: relative;
+  overflow: hidden;
+}
 
-        /* 제목 중앙 정렬 + 아래로 내리기 */
-        .title {
-            text-align: center;
-            font-size: 60px;
-            font-weight: bold;
-            color: #ffd1dc;
-            margin-top: 200px; /* 위 여백 */
-            margin-bottom: 10px;
-        }
+/* 제목 스타일 */
+.custom-title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffdde1;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  margin-top: 200px;  /* 화면 가운데 느낌 */
+  margin-bottom: 50px;
+}
 
-        /* 입력 글씨 크게 */
-        label {
-            font-size: 22px !important;
-            color: #fff5f7 !important;
-        }
+/* 입력창 글자 크기 */
+.css-2trqyj {  /* Streamlit selectbox 클래스 */
+  font-size: 20px !important;
+  color: #fff0f5 !important;
+  font-weight: bold;
+}
 
-        /* 입력창 글자 크기 */
-        input, select {
-            font-size: 20px !important;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+.css-1avcm0n {  /* Streamlit date_input 클래스 */
+  font-size: 20px !important;
+  color: #fff0f5 !important;
+  font-weight: bold;
+}
 
-# -------------------------------
-# 🌌 제목
-# -------------------------------
-st.markdown("<div class='title'>✨ 나의 혈액형 & 별자리 ✨</div>", unsafe_allow_html=True)
+/* 스티커(랜덤 이모지) 스타일 */
+.sticker {
+  position: absolute;
+  font-size: 2.5rem;
+  opacity: 0.9;
+}
 
-# -------------------------------
-# 💫 제목 아래 랜덤 이모티콘
-# -------------------------------
-emojis = ["✨", "🌙", "🔮", "🌌", "💫", "🌟", "🌸", "🦋", "🌷", "🌈", "🎀", "💖"]
-selected_emojis = " ".join(random.sample(emojis, 5))
+/* 버튼 스타일 */
+.stButton>button {
+    background-color: #ff77aa;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 12px;
+    padding: 10px 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
 
-st.markdown(
-    f"""
-    <div style='text-align: center; font-size: 40px; margin-top: -20px; margin-bottom: 50px;'>
-        {selected_emojis}
-    </div>
-    """,
-    unsafe_allow_html=True
+.stButton>button:hover {
+    background-color: #ff4499;
+    cursor: pointer;
+}
+</style>
+"""
+
+# ===============================
+# 앱 구조
+# ===============================
+st.markdown(THEME, unsafe_allow_html=True)
+
+# 제목 표시 (중앙, 여백 포함)
+st.markdown('<h1 class="custom-title">🌙 오늘의 밤하늘 운세 ✨</h1>', unsafe_allow_html=True)
+
+# ===============================
+# 랜덤 스티커 생성
+# ===============================
+stickers = ["🌸", "🌙", "⭐", "🦄", "🐰", "🐱", "🌈", "💖", "🍓", "🪐", "🌷", "✨", "🎀", "🎉", "💫"]
+num_stickers = 15  # 생성할 스티커 개수
+
+# 랜덤 위치에 스티커 배치
+sticker_html = ""
+for _ in range(num_stickers):
+    emoji = random.choice(stickers)
+    top = random.randint(0, 95)   # 화면 높이 비율
+    left = random.randint(0, 95)  # 화면 너비 비율
+    sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%;">{emoji}</div>'
+
+st.markdown(sticker_html, unsafe_allow_html=True
     )
 # -------------------- 사용자 입력 --------------------
 blood_type = st.selectbox("혈액형을 선택하세요", ["A", "B", "O", "AB"])
