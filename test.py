@@ -1,41 +1,66 @@
 import streamlit as st
 import datetime
 
+import random
+
+# ===============================
+# CSS 스타일 정의
+# ===============================
 THEME = """
 <style>
+/* 배경: 어두운 밤하늘 + 분홍빛 */
 .stApp {
-  background: linear-gradient(180deg, #4b1d3f 0%, #7b2b56 50%, #d95d7b 100%);
-  color: #fff8f0;
+  background: linear-gradient(180deg, #1a0028 0%, #4b1d3f 50%, #a23c65 100%);
+  color: #fff0f5;
   font-family: 'Comic Sans MS', 'Baloo 2', cursive;
-  padding-top: 100px;  /* 여기서 전체 앱 위쪽 여백 */
+  position: relative;
+  overflow: hidden;
 }
 
 /* 제목 스타일 */
-h1, .stMarkdown h1 {
-  text-align:center;
-  font-size:2.8rem !important;
-  color:#ffd6e0 !important;
-  text-shadow:0 3px 14px rgba(0,0,0,.35);
-  margin-top: 300px;  /* margin은 0으로 */
+.custom-title {
+  text-align: center;
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #ffdde1;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  margin-top: 200px;  /* 위쪽 여백 크게 */
+  margin-bottom: 50px;
 }
 
-/* 버튼 스타일 */
-div.stButton > button {
-  background: linear-gradient(135deg, #ff5f87, #b22b50);
-  color:#ffffff;
-  font-weight:700;
-  border-radius:20px;
-  border:0;
-  padding:.6rem 1.2rem;
-  box-shadow:0 6px 18px rgba(255,95,135,.4);
+/* 스티커(랜덤 이모지) 스타일 */
+.sticker {
+  position: absolute;
+  font-size: 2.5rem;
+  opacity: 0.9;
 }
-div.stButton > button:hover { filter: brightness(1.05); transform: translateY(-1px); }
-
-.block-container { padding-top: 1rem; }
-.css-1vbkxwb, .stSelectbox, .stDateInput { filter: drop-shadow(0 5px 15px rgba(0,0,0,.1)); }
 </style>
 """
+
+# ===============================
+# 앱 구조
+# ===============================
 st.markdown(THEME, unsafe_allow_html=True)
+
+# 제목 표시 (여백 포함)
+st.markdown('<h1 class="custom-title">🌙 오늘의 밤하늘 운세 ✨</h1>', unsafe_allow_html=True)
+
+# ===============================
+# 랜덤 스티커 생성
+# ===============================
+stickers = ["🌸", "🌙", "⭐", "🦄", "🐰", "🐱", "🌈", "💖", "🍓", "🪐", "🌷", "✨"]
+num_stickers = 12  # 생성할 스티커 개수
+
+# 랜덤 위치에 스티커 배치
+sticker_html = ""
+for _ in range(num_stickers):
+    emoji = random.choice(stickers)
+    top = random.randint(10, 90)   # 화면 높이 비율
+    left = random.randint(5, 90)   # 화면 너비 비율
+    sticker_html += f'<div class="sticker" style="top:{top}%; left:{left}%;">{emoji}</div>'
+
+st.markdown(sticker_html, unsafe_allow_html=True)
+
 st.title("🔮 혈액형 & 별자리 특징 확인 앱")
 
 st.header("당신의 정보를 입력하세요")
