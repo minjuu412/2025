@@ -244,4 +244,3 @@ if st.button("스타일 추천 받기"):
         st.image(img, caption=f"{blood_type}형 {zodiac} 스타일", use_column_width=True)
     else:
         st.error("추천 데이터를 찾을 수 없습니다. 입력을 확인해주세요.")
-
