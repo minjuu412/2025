@@ -7,7 +7,7 @@ THEME = """
   background: linear-gradient(180deg, #4b1d3f 0%, #7b2b56 50%, #d95d7b 100%);
   color: #fff8f0;
   font-family: 'Comic Sans MS', 'Baloo 2', cursive;
-  padding-top: 150px;  /* 여기서 전체 앱 위쪽 여백 */
+  padding-top: 400px;  /* 여기서 전체 앱 위쪽 여백 */
 }
 
 /* 제목 스타일 */
