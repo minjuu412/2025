@@ -7,7 +7,7 @@ THEME = """
   background: linear-gradient(180deg, #4b1d3f 0%, #7b2b56 50%, #d95d7b 100%);
   color: #fff8f0;
   font-family: 'Comic Sans MS', 'Baloo 2', cursive;
-  padding-top: 0px;  /* 여기서 전체 앱 위쪽 여백 */
+  padding-top: 100px;  /* 여기서 전체 앱 위쪽 여백 */
 }
 
 /* 제목 스타일 */
@@ -16,7 +16,7 @@ h1, .stMarkdown h1 {
   font-size:2.8rem !important;
   color:#ffd6e0 !important;
   text-shadow:0 3px 14px rgba(0,0,0,.35);
-  margin-top: 0px;  /* margin은 0으로 */
+  margin-top: 300px;  /* margin은 0으로 */
 }
 
 /* 버튼 스타일 */
