@@ -39,12 +39,12 @@ div[data-baseweb="datepicker"] > label {
     font-size: 20px !important;
 }
 
-/* 입력창 글자 */
-div[data-baseweb="select"] > div > div > input,
-div[data-baseweb="datepicker"] > div > input {
-    color: #000000 !important;
+/* selectbox 선택지 텍스트 색상 */
+div[data-baseweb="select"] > div > div > input {
+    color: #4B0082 !important;
     font-size: 18px !important;
 }
+
 
 /* 랜덤 스티커 */
 .sticker {
