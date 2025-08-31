@@ -22,14 +22,13 @@ THEME = """
     text-shadow: 0 5px 18px rgba(0,0,0,0.6);
     margin-top: 500px;   /* 제목 위 여백 */
     margin-bottom: 60px; /* 제목 아래 여백 */
-}
 body {
     display: flex;
     justify-content: center;   /* 가로 가운데 */
     align-items: center;       /* 세로 가운데 */
     height: 100vh;             /* 화면 전체 높이 */
     margin: 0;
-}
+}}
 
 /* 입력 폰트 크기 업 */
 div[data-baseweb="select"] > div, 
