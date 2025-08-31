@@ -2,7 +2,6 @@ import streamlit as st
 import datetime
 
 THEME = """
-THEME = """
 <style>
 .stApp {
   /* 어두운 분홍빛 노을 그라데이션 */
