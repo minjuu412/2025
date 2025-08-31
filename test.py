@@ -16,7 +16,7 @@ h1, .stMarkdown h1 {
   font-size:2.8rem !important;
   color:#ffd6e0 !important;  /* 밝은 분홍 글씨 */
   text-shadow:0 3px 14px rgba(0,0,0,.35);
-  margin-top:400px;  /* 위쪽 여백 */
+  margin-top:600px;  /* 위쪽 여백 */
 }
 
 /* 버튼 스타일 */
